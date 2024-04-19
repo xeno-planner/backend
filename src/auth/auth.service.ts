@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -8,7 +9,6 @@ import { User } from '@prisma/client';
 import { verify } from 'argon2';
 
 import { AuthDto } from '@/auth/dto/auth.dto';
-import { SanitizedUser } from '@/types/SanitizedUser';
 import { UserService } from '@/user/user.service';
 
 @Injectable()
@@ -20,20 +20,31 @@ export class AuthService {
 
   async login(dto: AuthDto) {
     // Get user and sanitize him
-    const user = await this.validateUser(dto);
-    const sanitized = this.sanitizeUser(user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...user } = await this.validateUser(dto);
     /** Access and refresh tokens */
-    const tokens = this.issueToken(sanitized.id);
+    const tokens = this.issueToken(user.id);
 
     return {
-      user: sanitized,
+      user,
       ...tokens,
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  sanitizeUser({ password, ...user }: User): SanitizedUser {
-    return user;
+  async register(dto: AuthDto) {
+    const oldUser = await this.userService.getByEmail(dto.email);
+
+    /** Check if user with certain email exists. */
+    if (oldUser) throw new BadRequestException('User already exists');
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...user } = await this.userService.create(dto);
+    const tokens = this.issueToken(user.id);
+
+    return {
+      user,
+      ...tokens,
+    };
   }
 
   /** Generates both of access and refresh tokens. */
