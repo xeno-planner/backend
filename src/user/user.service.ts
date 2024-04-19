@@ -3,9 +3,9 @@ import { User } from '@prisma/client';
 import { hash } from 'argon2';
 import { startOfDay, subDays } from 'date-fns';
 
+import { SanitizedUser } from '@/assets/types/SanitizedUser';
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { PrismaService } from '@/prisma.service';
-import { SanitizedUser } from '@/types/SanitizedUser';
 import { UserDto } from '@/user/dto/user.dto';
 
 @Injectable()
