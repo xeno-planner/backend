@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 
 /**
  * Adds IsOptional to decorator apply list;
@@ -24,4 +24,12 @@ export const OptionalString = () => {
  */
 export const OptionalBoolean = () => {
   return OptionalField(IsBoolean());
+};
+
+/**
+ * Validates enum that can be optional.
+ * @constructor
+ */
+export const OptionalEnum = (...params: Parameters<typeof IsEnum>) => {
+  return OptionalField(IsEnum(...params));
 };
