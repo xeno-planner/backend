@@ -1,8 +1,57 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+
+import { Auth } from '@/auth/decorators/auth.decorator';
+import { CurrentUser } from '@/auth/decorators/user.decorator';
+import { TaskDto } from '@/task/task.dto';
 
 import { TaskService } from './task.service';
 
-@Controller('task')
+@Controller('user/task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
+
+  @HttpCode(200)
+  @Get()
+  @Auth()
+  async getAll(@CurrentUser('id') userId: string) {
+    return this.taskService.getAll(userId);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post()
+  @Auth()
+  async create(@Body() dto: TaskDto, @CurrentUser('id') userId: string) {
+    return this.taskService.create(dto, userId);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Put(':id')
+  @Auth()
+  async update(
+    @Body() dto: TaskDto,
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+  ) {
+    return this.taskService.update(dto, id, userId);
+  }
+
+  @HttpCode(200)
+  @Delete(':id')
+  @Auth()
+  async delete(@Param('id') id: string) {
+    return this.taskService.delete(id);
+  }
 }
