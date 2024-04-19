@@ -1439,6 +1439,11 @@
     "@webassemblyjs/ast" "1.12.1"
     "@xtuc/long" "4.2.2"
 
+"@xenopomp/advanced-types@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@xenopomp/advanced-types/-/advanced-types-1.7.4.tgz#e6d56418ff9c7175ddf7d3a536698559b7134f17"
+  integrity sha512-7Q66OW5zMNVS0qRQk18KCR/Jqe/dwGL9t9rG0Of0eHxlx8kOi576B2q5oH+ilkaMTWYNtRL8AAkVCVDr0iFyXQ==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
