@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { hash } from 'argon2';
+import { startOfDay, subDays } from 'date-fns';
 
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { PrismaService } from '@/prisma.service';
+import { SanitizedUser } from '@/types/SanitizedUser';
 import { UserDto } from '@/user/dto/user.dto';
 
 @Injectable()
@@ -57,5 +59,75 @@ export class UserService {
       },
       data,
     });
+  }
+
+  async getProfile(id: string): Promise<{
+    user: SanitizedUser;
+    statistics: Array<{
+      label: string;
+      value: number;
+    }>;
+  }> {
+    const profile = await this.getById(id);
+
+    /** Count of all tasks of user. */
+    const totalTasks = profile.tasks.length;
+    /** Count of completed tasks of user. */
+    const completedTasks = await this.prisma.task.count({
+      where: {
+        userId: id,
+        isCompleted: true,
+      },
+    });
+
+    // Get one day and one week timestamps
+    const todayStart = startOfDay(new Date());
+    const weekStart = startOfDay(subDays(new Date(), 7));
+
+    /** Count of tasks not older than one day ago. */
+    const todayTasks = await this.prisma.task.count({
+      where: {
+        userId: id,
+        createdAt: {
+          gte: todayStart.toISOString(),
+        },
+      },
+    });
+
+    /** Count of tasks not older than one week ago. */
+    const weekTasks = await this.prisma.task.count({
+      where: {
+        userId: id,
+        createdAt: {
+          gte: weekStart.toISOString(),
+        },
+      },
+    });
+
+    /** Remove password from response. */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = profile;
+
+    return {
+      user: rest,
+      statistics: [
+        {
+          label: 'Всего',
+          value: totalTasks,
+        },
+        {
+          label: 'Выполнено задач',
+          value: completedTasks,
+        },
+        {
+          label: 'Задачи за сегодня',
+          value: todayTasks,
+        },
+        {
+          label: 'Задачи за неделю',
+          value: weekTasks,
+        },
+      ],
+    };
   }
 }
