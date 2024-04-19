@@ -20,7 +20,7 @@ export class PomodoroService {
       include: {
         rounds: {
           orderBy: {
-            id: 'desc',
+            id: 'asc',
           },
         },
       },
