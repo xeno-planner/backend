@@ -39,7 +39,7 @@ export class TimeBlockController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Put(':id')
+  @Put('/:id')
   @Auth()
   async update(
     @Body() dto: TimeBlockDto,
@@ -51,7 +51,7 @@ export class TimeBlockController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Put('update-order')
+  @Put('order/update')
   @Auth()
   async updateOrder(@Body() dto: UpdateOrderDto) {
     return this.timeBlockService.updateOrder(dto.ids);
