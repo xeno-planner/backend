@@ -2,22 +2,22 @@ import { Priority } from '@prisma/client';
 import { Transform } from 'class-transformer';
 
 import {
-  OptionalBoolean,
-  OptionalEnum,
-  OptionalString,
+  IsOptionalBoolean,
+  IsOptionalEnum,
+  IsOptionalString,
 } from '@/assets/decorators/validation';
 
 export class TaskDto {
-  @OptionalString()
+  @IsOptionalString()
   name: string;
 
-  @OptionalBoolean()
+  @IsOptionalBoolean()
   isCompleted?: boolean;
 
-  @OptionalString()
+  @IsOptionalString()
   createdAt?: string;
 
-  @OptionalEnum(Priority)
+  @IsOptionalEnum(Priority)
   @Transform(({ value }) => ('' + value).toLowerCase())
   priority: Priority;
 }

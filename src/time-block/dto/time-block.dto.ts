@@ -1,17 +1,20 @@
 import { IsNumber, IsString } from 'class-validator';
 
-import { OptionalNumber, OptionalString } from '@/assets/decorators/validation';
+import {
+  IsOptionalNumber,
+  IsOptionalString,
+} from '@/assets/decorators/validation';
 
 export class TimeBlockDto {
   @IsString()
   name: string;
 
-  @OptionalString()
+  @IsOptionalString()
   color?: string;
 
   @IsNumber()
   duration: number;
 
-  @OptionalNumber()
+  @IsOptionalNumber()
   order: number;
 }

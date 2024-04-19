@@ -20,7 +20,7 @@ const OptionalField = (...decorators: Parameters<typeof applyDecorators>) => {
  * Validates string that can be optional.
  * @constructor
  */
-export const OptionalString = () => {
+export const IsOptionalString = () => {
   return OptionalField(IsString());
 };
 
@@ -28,7 +28,7 @@ export const OptionalString = () => {
  * Validates boolean that can be optional.
  * @constructor
  */
-export const OptionalBoolean = () => {
+export const IsOptionalBoolean = () => {
   return OptionalField(IsBoolean());
 };
 
@@ -36,7 +36,7 @@ export const OptionalBoolean = () => {
  * Validates number that can be optional.
  * @constructor
  */
-export const OptionalNumber = () => {
+export const IsOptionalNumber = () => {
   return OptionalField(IsNumber());
 };
 
@@ -44,6 +44,6 @@ export const OptionalNumber = () => {
  * Validates enum that can be optional.
  * @constructor
  */
-export const OptionalEnum = (...params: Parameters<typeof IsEnum>) => {
+export const IsOptionalEnum = (...params: Parameters<typeof IsEnum>) => {
   return OptionalField(IsEnum(...params));
 };

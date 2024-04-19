@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, MinLength } from 'class-validator';
 
-import { OptionalString } from '@/assets/decorators/validation';
+import { IsOptionalString } from '@/assets/decorators/validation';
 import { AuthDto } from '@/auth/dto/auth.dto';
 
 import { PomodoroSettingsDto } from './pomodoro-settings.dto';
@@ -10,10 +10,10 @@ export class UserDto extends PomodoroSettingsDto implements AuthDto {
   @IsEmail()
   email: string;
 
-  @OptionalString()
+  @IsOptionalString()
   name: string;
 
-  @OptionalString()
+  @IsOptionalString()
   @MinLength(6, {
     message: 'password must be at least 6 characters long',
   })
