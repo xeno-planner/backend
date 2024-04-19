@@ -4,9 +4,11 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { verify } from 'argon2';
+import { CookieOptions, Response } from 'express';
 
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { UserService } from '@/user/user.service';
@@ -16,7 +18,11 @@ export class AuthService {
   constructor(
     private readonly jwt: JwtService,
     private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
+
+  private EXPIRE_DAY_REFRESH_TOKEN: number = 1;
+  private REFRESH_TOKEN_NAME: string = 'refreshToken';
 
   async login(dto: AuthDto) {
     // Get user and sanitize him
@@ -45,6 +51,39 @@ export class AuthService {
       user,
       ...tokens,
     };
+  }
+
+  private getResponseConfig(): CookieOptions {
+    const envMode =
+      this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
+
+    return {
+      httpOnly: true,
+      domain: this.configService.get('APP_HOST'),
+      // true if production
+      secure: envMode === 'prod',
+      // lax if production
+      sameSite: envMode === 'prod' ? 'lax' : 'none',
+    };
+  }
+
+  /** Add refreshToken to server cookies. */
+  addRefreshTokenToResponse(res: Response, refreshToken: string) {
+    const expiresIn = new Date();
+    expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+
+    res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
+      ...this.getResponseConfig(),
+      expires: expiresIn,
+    });
+  }
+
+  /** Clear response`s cookie header. */
+  removeRefreshTokenFromResponse(res: Response) {
+    res.cookie(this.REFRESH_TOKEN_NAME, '', {
+      ...this.getResponseConfig(),
+      expires: new Date(0),
+    });
   }
 
   /** Generates both of access and refresh tokens. */
