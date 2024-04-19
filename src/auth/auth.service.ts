@@ -21,8 +21,8 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  private EXPIRE_DAY_REFRESH_TOKEN: number = 1;
-  private REFRESH_TOKEN_NAME: string = 'refreshToken';
+  EXPIRE_DAY_REFRESH_TOKEN: number = 1;
+  REFRESH_TOKEN_NAME: string = 'refreshToken';
 
   async login(dto: AuthDto) {
     // Get user and sanitize him
@@ -45,6 +45,21 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
+    const tokens = this.issueToken(user.id);
+
+    return {
+      user,
+      ...tokens,
+    };
+  }
+
+  async getNewTokens(refreshToken: string) {
+    const result = await this.jwt.verifyAsync(refreshToken);
+    if (!result) throw new UnauthorizedException('Invalid refresh token');
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...user } = await this.userService.getById(result.id);
+
     const tokens = this.issueToken(user.id);
 
     return {

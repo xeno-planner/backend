@@ -3,11 +3,13 @@ import {
   Controller,
   HttpCode,
   Post,
+  Req,
   Res,
+  UnauthorizedException,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 import { AuthDto } from '@/auth/dto/auth.dto';
 
@@ -35,6 +37,32 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const { refreshToken, ...response } = await this.authService.register(dto);
+    this.authService.addRefreshTokenToResponse(res, refreshToken);
+
+    return response;
+  }
+
+  @HttpCode(200)
+  @Post('login/access-token')
+  async getNewTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshTokenFromCookies =
+      req.cookies[this.authService.REFRESH_TOKEN_NAME];
+
+    /** Check if refreshToken is not provided through cookies. */
+    if (!refreshTokenFromCookies) {
+      this.authService.removeRefreshTokenFromResponse(res);
+      throw new UnauthorizedException('Refresh token not passed');
+    }
+
+    /** Issue new tokens. */
+    const { refreshToken, ...response } = await this.authService.getNewTokens(
+      refreshTokenFromCookies,
+    );
+
+    /** Assign refreshToken to response. */
     this.authService.addRefreshTokenToResponse(res, refreshToken);
 
     return response;
