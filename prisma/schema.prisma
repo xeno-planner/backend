@@ -14,64 +14,86 @@ datasource db {
 }
 
 model User {
-  id              Int               @id @default(autoincrement())
-  created_at      DateTime          @default(now())
-  updated_at      DateTime?
-  email           String
-  name            String
-  password        String
-  Stats           Stats?
-  Task            Task[]
-  TimeBlock       TimeBlock[]
-  PomodoroSession PomodoroSession[]
-}
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-model Stats {
-  id              Int  @id @default(autoincrement())
-  user            User @relation(fields: [user_id], references: [id])
-  user_id         Int  @unique
-  break_interval  Int
-  intervals_count Int
+  email    String  @unique
+  name     String?
+  password String
+
+  workInterval   Int? @default(50) @map("work_interval")
+  breakInterval  Int? @default(10) @map("break_interval")
+  intervalsCount Int? @default(7) @map("intervals_count")
+
+  tasks            Task[]
+  timeBlocks       TimeBlock[]
+  pomodoroSessions PomodoroSession[]
+
+  @@map("user")
 }
 
 model Task {
-  id           Int       @id @default(autoincrement())
-  created_at   DateTime  @default(now())
-  updated_at   DateTime?
-  name         String
-  is_completed Boolean   @default(false)
-  User         User?     @relation(fields: [userId], references: [id])
-  userId       Int?
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name        String
+  priority    Priority?
+  isCompleted Boolean?  @default(false) @map("is_completed")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  @@map("task")
 }
 
 model TimeBlock {
-  id         Int       @id @default(autoincrement())
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  name       String
-  color      String
-  user       User      @relation(fields: [userId], references: [id])
-  userId     Int
-  duration   Int
-  order      Int
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name     String
+  color    String?
+  duration Int
+  order    Int     @default(1)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  @@map("time_block")
 }
 
 model PomodoroSession {
-  id            Int             @id @default(autoincrement())
-  created_at    DateTime        @default(now())
-  updated_at    DateTime?
-  is_completed  Boolean         @default(false)
-  user          User            @relation(fields: [userId], references: [id])
-  userId        Int
-  PomodoroRound PomodoroRound[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  isCompleted Boolean? @default(false) @map("is_completed")
+
+  user   User            @relation(fields: [userId], references: [id])
+  userId String          @map("user_id")
+  rounds PomodoroRound[]
+
+  @@map("pomodoro_session")
 }
 
 model PomodoroRound {
-  id                Int             @id @default(autoincrement())
-  created_at        DateTime        @default(now())
-  updated_at        DateTime?
-  total_minutes     Int
-  is_completed      Boolean         @default(false)
-  pomodoro_session  PomodoroSession @relation(fields: [pomodoroSessionId], references: [id])
-  pomodoroSessionId Int
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  totalSeconds Int
+  isCompleted  Boolean? @default(false) @map("is_completed")
+
+  pomodoroSession   PomodoroSession @relation(fields: [pomodoroSessionId], references: [id], onDelete: Cascade)
+  pomodoroSessionId String          @map("pomodoro_session_id")
+
+  @@map("pomodoro_round")
+}
+
+enum Priority {
+  low
+  medium
+  high
 }
