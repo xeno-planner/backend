@@ -21,7 +21,7 @@
     "lint-staged": "lint-staged",
     "prepare": "husky",
     "migrate:dev": "npx prisma migrate dev",
-    "pack:types": "esno \".dev/scripts/pack-types.ts\""
+    "pack:type": "prisma generate && esno .dev/scripts/pack-types.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -72,6 +72,7 @@
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
+    "type-fest": "^4.15.0",
     "typescript": "^5.1.3"
   },
   "jest": {
