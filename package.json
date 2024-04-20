@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "lint-staged": "lint-staged",
     "prepare": "husky",
-    "migrate:dev": "npx prisma migrate dev"
+    "migrate:dev": "npx prisma migrate dev",
+    "pack:types": "esno \".dev/scripts/pack-types.ts\""
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -59,6 +60,7 @@
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "esno": "^4.7.0",
     "husky": "^9.0.11",
     "jest": "^29.5.0",
     "lint-staged": "^15.2.2",
