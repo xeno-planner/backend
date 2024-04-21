@@ -65,6 +65,14 @@ export class UserService {
     });
   }
 
+  async delete(id: string) {
+    await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   async getProfile(id: string): Promise<{
     user: SanitizedUser;
     statistics: Array<{

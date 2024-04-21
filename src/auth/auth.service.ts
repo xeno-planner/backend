@@ -58,12 +58,9 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
-    const tokens = this.issueToken(user.id);
 
-    return {
-      user,
-      ...tokens,
-    };
+    // Request verification
+    await this.verificationService.requestVerification(user.id);
   }
 
   /**
@@ -162,8 +159,10 @@ export class AuthService {
     const verification = await this.verificationService.getByUserId(id);
 
     /** No verification record was found. */
-    if (!verification)
+    if (!verification) {
+      await this.userService.delete(id);
       throw new ForbiddenException('Verification not requested for that user');
+    }
 
     return verification.status;
   }
