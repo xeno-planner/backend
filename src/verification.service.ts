@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { VerificationStatus } from '@prisma/client';
 import { hash, verify } from 'argon2';
 
+import { MailService } from '@/mail/mail.service';
 import { PrismaService } from '@/prisma.service';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class VerificationService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   /** Clears stale verifications. */
