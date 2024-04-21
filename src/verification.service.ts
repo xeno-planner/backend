@@ -64,6 +64,11 @@ export class VerificationService implements OnModuleInit {
   /**
    * This method contains logic related to
    * sending email and creating verification record in database.
+   *
+   * @todo
+   * Find bug inside this method, that throw error on
+   * mail generation.
+   *
    * @param userId
    */
   async requestVerification(userId: string) {
