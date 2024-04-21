@@ -2509,6 +2509,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    secret: string | null
     status: $Enums.VerificationStatus | null
   }
 
@@ -2517,6 +2518,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    secret: string | null
     status: $Enums.VerificationStatus | null
   }
 
@@ -2525,6 +2527,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    secret: number
     status: number
     _all: number
   }
@@ -2535,6 +2538,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    secret?: true
     status?: true
   }
 
@@ -2543,6 +2547,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    secret?: true
     status?: true
   }
 
@@ -2551,6 +2556,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    secret?: true
     status?: true
     _all?: true
   }
@@ -2632,6 +2638,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    secret: string
     status: $Enums.VerificationStatus | null
     _count: UserVerificationCountAggregateOutputType | null
     _min: UserVerificationMinAggregateOutputType | null
@@ -2657,6 +2664,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    secret?: boolean
     status?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userVerification"]>
@@ -2666,6 +2674,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    secret?: boolean
     status?: boolean
   }
 
@@ -2684,6 +2693,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      secret: string
       status: $Enums.VerificationStatus | null
     }, ExtArgs["result"]["userVerification"]>
     composites: {}
@@ -3084,6 +3094,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"UserVerification", 'DateTime'>
     readonly updatedAt: FieldRef<"UserVerification", 'DateTime'>
     readonly userId: FieldRef<"UserVerification", 'String'>
+    readonly secret: FieldRef<"UserVerification", 'String'>
     readonly status: FieldRef<"UserVerification", 'VerificationStatus'>
   }
     
@@ -7284,6 +7295,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
+    secret: 'secret',
     status: 'status'
   };
 
@@ -7557,6 +7569,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"UserVerification"> | Date | string
     updatedAt?: DateTimeFilter<"UserVerification"> | Date | string
     userId?: StringFilter<"UserVerification"> | string
+    secret?: StringFilter<"UserVerification"> | string
     status?: EnumVerificationStatusNullableFilter<"UserVerification"> | $Enums.VerificationStatus | null
     user?: XOR<UserRelationFilter, UserWhereInput>
   }
@@ -7566,6 +7579,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    secret?: SortOrder
     status?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -7578,6 +7592,7 @@ export namespace Prisma {
     NOT?: UserVerificationWhereInput | UserVerificationWhereInput[]
     createdAt?: DateTimeFilter<"UserVerification"> | Date | string
     updatedAt?: DateTimeFilter<"UserVerification"> | Date | string
+    secret?: StringFilter<"UserVerification"> | string
     status?: EnumVerificationStatusNullableFilter<"UserVerification"> | $Enums.VerificationStatus | null
     user?: XOR<UserRelationFilter, UserWhereInput>
   }, "id" | "userId">
@@ -7587,6 +7602,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    secret?: SortOrder
     status?: SortOrderInput | SortOrder
     _count?: UserVerificationCountOrderByAggregateInput
     _max?: UserVerificationMaxOrderByAggregateInput
@@ -7601,6 +7617,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"UserVerification"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserVerification"> | Date | string
     userId?: StringWithAggregatesFilter<"UserVerification"> | string
+    secret?: StringWithAggregatesFilter<"UserVerification"> | string
     status?: EnumVerificationStatusNullableWithAggregatesFilter<"UserVerification"> | $Enums.VerificationStatus | null
   }
 
@@ -7965,6 +7982,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    secret: string
     status?: $Enums.VerificationStatus | null
     user: UserCreateNestedOneWithoutUserVerificationInput
   }
@@ -7974,6 +7992,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    secret: string
     status?: $Enums.VerificationStatus | null
   }
 
@@ -7981,6 +8000,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
     user?: UserUpdateOneRequiredWithoutUserVerificationNestedInput
   }
@@ -7990,6 +8010,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 
@@ -7998,6 +8019,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    secret: string
     status?: $Enums.VerificationStatus | null
   }
 
@@ -8005,6 +8027,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 
@@ -8013,6 +8036,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 
@@ -8505,6 +8529,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    secret?: SortOrder
     status?: SortOrder
   }
 
@@ -8513,6 +8538,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    secret?: SortOrder
     status?: SortOrder
   }
 
@@ -8521,6 +8547,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    secret?: SortOrder
     status?: SortOrder
   }
 
@@ -9346,6 +9373,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    secret: string
     status?: $Enums.VerificationStatus | null
   }
 
@@ -9353,6 +9381,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    secret: string
     status?: $Enums.VerificationStatus | null
   }
 
@@ -9462,6 +9491,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 
@@ -9469,6 +9499,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
     status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 

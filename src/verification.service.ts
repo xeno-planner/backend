@@ -55,6 +55,8 @@ export class VerificationService implements OnModuleInit {
    * @param userId
    */
   async requestVerification(userId: string) {
+    // const secret = randomStringGenerator();
+
     await this.prisma.userVerification.create({
       data: {
         user: {

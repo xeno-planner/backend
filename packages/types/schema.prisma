@@ -48,6 +48,7 @@ model UserVerification {
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique @map("user_id")
 
+  secret String
   status VerificationStatus? @default(requested)
 
   @@map("user_verification")
