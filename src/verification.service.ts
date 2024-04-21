@@ -18,11 +18,6 @@ export class VerificationService implements OnModuleInit {
     private readonly configService: ConfigService,
   ) {}
 
-  /** Returns string of oldest allowed date. */
-  private getTimeThreshold(): string {
-    return new Date().toISOString().split('T')[0];
-  }
-
   /** Clears stale verifications. */
   private async clearStale() {
     const today = new Date().toISOString().split('T')[0];
