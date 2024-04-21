@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { VerificationStatus } from '@prisma/client';
 import { hash, verify } from 'argon2';
 
+import VerificationTemplate from '@/assets/templates/Verification.template';
 import { MailService } from '@/mail/mail.service';
 import { PrismaService } from '@/prisma.service';
 
@@ -87,6 +88,13 @@ export class VerificationService implements OnModuleInit {
 
     // TODO form email letter with link to verification (http://APP_FULL_URL/api/auth/verify/:userId?secret=)
     // const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
+
+    // Send email to user.
+    // Email will be fetched from database.
+    await this.mailService.sendMail(
+      userId,
+      VerificationTemplate({ url: 'https://foo.bar' }),
+    );
   }
 
   /**
