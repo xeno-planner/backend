@@ -15,7 +15,12 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'packages/types/*', 'dist'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    'packages/types/*',
+    'dist',
+    'src/assets/templates/*.tsx',
+  ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
