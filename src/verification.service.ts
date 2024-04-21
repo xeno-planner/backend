@@ -72,5 +72,10 @@ export class VerificationService implements OnModuleInit {
         },
       },
     });
+
+    console.log({
+      userId,
+      secret,
+    });
   }
 }
