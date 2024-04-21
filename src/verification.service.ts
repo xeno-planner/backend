@@ -1,4 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
+import { hash } from 'argon2';
 
 import { PrismaService } from '@/prisma.service';
 
@@ -55,10 +57,12 @@ export class VerificationService implements OnModuleInit {
    * @param userId
    */
   async requestVerification(userId: string) {
-    // const secret = randomStringGenerator();
+    const secret = randomStringGenerator();
 
     await this.prisma.userVerification.create({
       data: {
+        secret: await hash(secret),
+
         user: {
           connect: {
             id: userId,

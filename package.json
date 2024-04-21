@@ -21,7 +21,8 @@
     "lint-staged": "lint-staged",
     "prepare": "husky",
     "migrate:dev": "npx prisma migrate dev",
-    "pack:type": "prisma generate && esno .dev/scripts/pack-types.ts"
+    "pack:type": "prisma generate && esno .dev/scripts/pack-types.ts",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
