@@ -5,6 +5,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
+import { ConfigService } from '@nestjs/config';
 import { VerificationStatus } from '@prisma/client';
 import { hash, verify } from 'argon2';
 
@@ -12,7 +13,10 @@ import { PrismaService } from '@/prisma.service';
 
 @Injectable()
 export class VerificationService implements OnModuleInit {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   /** Returns string of oldest allowed date. */
   private getTimeThreshold(): string {
@@ -65,6 +69,9 @@ export class VerificationService implements OnModuleInit {
    * @param userId
    */
   async requestVerification(userId: string) {
+    /** App url for email generation. */
+    // const appUrl = this.configService.get('APP_FULL_URL');
+
     /** Not encoded secret word yet. */
     const secret = randomStringGenerator();
 
@@ -81,10 +88,7 @@ export class VerificationService implements OnModuleInit {
       },
     });
 
-    console.log({
-      userId,
-      secret,
-    });
+    // TODO form email letter with link to verification (http://APP_FULL_URL/auth/verify/:userId?secret=)
   }
 
   /**
