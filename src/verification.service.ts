@@ -68,13 +68,13 @@ export class VerificationService implements OnModuleInit {
    */
   async requestVerification(userId: string) {
     /** App url for email generation. */
-    // const appUrl = this.configService.get('APP_FULL_URL');
+    const appUrl = this.configService.get('APP_FULL_URL');
 
     /** Not encoded secret word yet. */
     const secret = randomStringGenerator();
 
     // TODO form email letter with link to verification (http://APP_FULL_URL/api/auth/verify/:userId?secret=)
-    // const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
+    const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
 
     /**
      * Send email to user. Email will be fetched from database.
@@ -82,7 +82,7 @@ export class VerificationService implements OnModuleInit {
      */
     await this.mailService.sendMail(
       userId,
-      VerificationTemplate({ url: 'https://foo.bar' }),
+      VerificationTemplate({ url: linkToVerification }),
     );
 
     /** Create verification record. */
