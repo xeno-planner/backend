@@ -50,7 +50,7 @@ export class VerificationService implements OnModuleInit {
   }
 
   /**
-   * This methods contains logic related to
+   * This method contains logic related to
    * sending email and creating verification record in database.
    * @param userId
    */
