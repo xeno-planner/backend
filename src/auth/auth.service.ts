@@ -73,7 +73,7 @@ export class AuthService {
     if (!isValid) throw new BadRequestException('Incorrect verification data.');
 
     // Redirect to front-end page
-    res.redirect('https://www.youtube.com/watch?v=-7K_0NRLCu4');
+    res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   }
 
   /**
