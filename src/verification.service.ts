@@ -60,6 +60,7 @@ export class VerificationService implements OnModuleInit {
     /** Not encoded secret word yet. */
     const secret = randomStringGenerator();
 
+    /** Create verification record. */
     await this.prisma.userVerification.create({
       data: {
         secret: await hash(secret),
