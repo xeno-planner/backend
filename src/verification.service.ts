@@ -73,6 +73,18 @@ export class VerificationService implements OnModuleInit {
     /** Not encoded secret word yet. */
     const secret = randomStringGenerator();
 
+    // TODO form email letter with link to verification (http://APP_FULL_URL/api/auth/verify/:userId?secret=)
+    // const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
+
+    /**
+     * Send email to user. Email will be fetched from database.
+     * If this throws, no verification record will be created.
+     */
+    await this.mailService.sendMail(
+      userId,
+      VerificationTemplate({ url: 'https://foo.bar' }),
+    );
+
     /** Create verification record. */
     await this.prisma.userVerification.create({
       data: {
@@ -85,16 +97,6 @@ export class VerificationService implements OnModuleInit {
         },
       },
     });
-
-    // TODO form email letter with link to verification (http://APP_FULL_URL/api/auth/verify/:userId?secret=)
-    // const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
-
-    // Send email to user.
-    // Email will be fetched from database.
-    await this.mailService.sendMail(
-      userId,
-      VerificationTemplate({ url: 'https://foo.bar' }),
-    );
   }
 
   /**
