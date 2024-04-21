@@ -12,6 +12,7 @@ const MyButton = ({ url, children }: { url: string, children?: string }) => {
         padding: '1em 1.5em',
         borderRadius: '8px',
         background: '#6E51D7',
+        color: '#E6E5E6',
       }}
     >
       {children}
