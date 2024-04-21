@@ -8,9 +8,14 @@ export class MailService {
   constructor(private readonly userService: UserService) {}
 
   async sendMail(userId: string, ...params: Parameters<typeof renderAsync>) {
+    const { email } = await this.userService.getById(userId);
+
     /** Rendered html content as string. */
     const html = await renderAsync(...params);
 
-    console.log(html);
+    console.log({
+      email,
+      html,
+    });
   }
 }
