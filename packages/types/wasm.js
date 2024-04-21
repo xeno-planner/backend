@@ -131,6 +131,14 @@ exports.Prisma.UserScalarFieldEnum = {
   intervalsCount: 'intervalsCount'
 };
 
+exports.Prisma.UserVerificationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  status: 'status'
+};
+
 exports.Prisma.TaskScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -183,6 +191,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.VerificationStatus = exports.$Enums.VerificationStatus = {
+  requested: 'requested',
+  accepted: 'accepted',
+  denied: 'denied'
+};
+
 exports.Priority = exports.$Enums.Priority = {
   low: 'low',
   medium: 'medium',
@@ -191,6 +205,7 @@ exports.Priority = exports.$Enums.Priority = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  UserVerification: 'UserVerification',
   Task: 'Task',
   TimeBlock: 'TimeBlock',
   PomodoroSession: 'PomodoroSession',
