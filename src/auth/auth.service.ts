@@ -63,6 +63,16 @@ export class AuthService {
     await this.verificationService.requestVerification(user.id);
   }
 
+  async verifyViaEmail(userId: string, secret: string) {
+    const isValid = await this.verificationService.verify(userId, secret);
+
+    if (!isValid) throw new BadRequestException('Incorrect verification data.');
+
+    return {
+      isValid,
+    };
+  }
+
   /**
    * Generates new tokens if given refreshToken
    * is valid.

@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
+  Param,
   Post,
+  Query,
   Req,
   Res,
   UnauthorizedException,
@@ -70,5 +73,14 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) res: Response) {
     this.authService.removeRefreshTokenFromResponse(res);
     return true;
+  }
+
+  @HttpCode(200)
+  @Get('verify/:userId')
+  async verifyUser(
+    @Param('userId') userId: string,
+    @Query('secret') secret: string,
+  ) {
+    return this.authService.verifyViaEmail(userId, secret);
   }
 }

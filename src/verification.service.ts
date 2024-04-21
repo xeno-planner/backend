@@ -1,7 +1,12 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleInit,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { VerificationStatus } from '@prisma/client';
-import { hash } from 'argon2';
+import { hash, verify } from 'argon2';
 
 import { PrismaService } from '@/prisma.service';
 
@@ -82,5 +87,33 @@ export class VerificationService implements OnModuleInit {
     });
   }
 
-  // async verify(): Promise<boolean>
+  /**
+   * Compares the encrypted secret with the provided one
+   * @param userId
+   * @param secret
+   */
+  async verify(userId: string, secret: string): Promise<boolean> {
+    const { secret: encodedSecret, status } = await this.getByUserId(userId);
+
+    if (status === VerificationStatus.accepted) {
+      throw new UnprocessableEntityException('User already verified');
+    }
+
+    /** True if provided secret and cuid are correct. */
+    const isValid = await verify(encodedSecret, secret);
+
+    /** If data is valid, change status to accepted. */
+    if (isValid) {
+      await this.prisma.userVerification.update({
+        where: {
+          userId,
+        },
+        data: {
+          status: VerificationStatus.accepted,
+        },
+      });
+    }
+
+    return isValid;
+  }
 }
