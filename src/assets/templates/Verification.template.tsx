@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Html } from '@react-email/components';
+import { Html } from '@react-email/components';
 import MyButton from '@/assets/templates/components/MyButton';
 
 const VerificationTemplate = ({ url }: { url: string }) => {
