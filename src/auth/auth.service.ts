@@ -53,6 +53,11 @@ export class AuthService {
     };
   }
 
+  /**
+   * Generates new tokens if given refreshToken
+   * is valid.
+   * @param refreshToken
+   */
   async getNewTokens(refreshToken: string) {
     const result = await this.jwt.verifyAsync(refreshToken);
     if (!result) throw new UnauthorizedException('Invalid refresh token');
@@ -68,6 +73,7 @@ export class AuthService {
     };
   }
 
+  /** Returns config for cookie response. */
   private getResponseConfig(): CookieOptions {
     const envMode =
       this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
@@ -93,7 +99,7 @@ export class AuthService {
     });
   }
 
-  /** Clear response`s cookie header. */
+  /** Clear cookie header of response. */
   removeRefreshTokenFromResponse(res: Response) {
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       ...this.getResponseConfig(),
@@ -119,6 +125,10 @@ export class AuthService {
     };
   }
 
+  /**
+   * Checks if user with certain email exists
+   * and return him.
+   */
   private async validateUser(dto: AuthDto) {
     const user = await this.userService.getByEmail(dto.email);
 
