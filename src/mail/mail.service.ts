@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { renderAsync } from '@react-email/components';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
 
 import { UserService } from '@/user/user.service';
 
