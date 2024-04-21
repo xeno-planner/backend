@@ -63,14 +63,13 @@ export class AuthService {
     await this.verificationService.requestVerification(user.id);
   }
 
-  async verifyViaEmail(userId: string, secret: string) {
+  async verifyViaEmail(userId: string, secret: string, res: Response) {
     const isValid = await this.verificationService.verify(userId, secret);
 
     if (!isValid) throw new BadRequestException('Incorrect verification data.');
 
-    return {
-      isValid,
-    };
+    // Redirect to front-end page
+    res.redirect('https://www.youtube.com/watch?v=-7K_0NRLCu4');
   }
 
   /**

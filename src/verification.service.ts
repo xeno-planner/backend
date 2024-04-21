@@ -89,6 +89,7 @@ export class VerificationService implements OnModuleInit {
     });
 
     // TODO form email letter with link to verification (http://APP_FULL_URL/auth/verify/:userId?secret=)
+    // const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
   }
 
   /**

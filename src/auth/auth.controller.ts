@@ -80,7 +80,8 @@ export class AuthController {
   async verifyUser(
     @Param('userId') userId: string,
     @Query('secret') secret: string,
+    @Res() res: Response,
   ) {
-    return this.authService.verifyViaEmail(userId, secret);
+    return this.authService.verifyViaEmail(userId, secret, res);
   }
 }
