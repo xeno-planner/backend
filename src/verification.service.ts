@@ -44,8 +44,6 @@ export class VerificationService implements OnModuleInit {
   async getByUserId(userId: string) {
     await this.clearStale();
 
-    // const today = this.getTimeThreshold();
-
     return this.prisma.userVerification.findFirst({
       where: {
         userId,
