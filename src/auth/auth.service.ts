@@ -61,6 +61,10 @@ export class AuthService {
 
     // Request verification
     await this.verificationService.requestVerification(user.id);
+
+    return {
+      verification: VerificationStatus.requested,
+    };
   }
 
   async verifyViaEmail(userId: string, secret: string, res: Response) {

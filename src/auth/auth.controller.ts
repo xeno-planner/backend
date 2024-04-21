@@ -39,7 +39,7 @@ export class AuthController {
     @Body() dto: AuthDto,
     // @Res({ passthrough: true }) res: Response,
   ) {
-    await this.authService.register(dto);
+    return await this.authService.register(dto);
   }
 
   @HttpCode(200)
