@@ -3,7 +3,7 @@
 /node_modules
 /build
 /.dev/generated
-/packages/types/*.js
+/packages/types/**/*.js
 /packages/types/query_engine-windows.dll.node
 
 # Logs
