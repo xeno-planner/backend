@@ -19,7 +19,7 @@ module.exports = {
     '.eslintrc.js',
     'packages/types/*',
     'dist',
-    'src/assets/templates/*.tsx',
+    'src/assets/templates/*',
   ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
