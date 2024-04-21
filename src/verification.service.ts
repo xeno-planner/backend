@@ -1,5 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
+import { VerificationStatus } from '@prisma/client';
 import { hash } from 'argon2';
 
 import { PrismaService } from '@/prisma.service';
@@ -18,8 +19,12 @@ export class VerificationService implements OnModuleInit {
     const today = new Date().toISOString().split('T')[0];
 
     // Clear all verifications that are too old
+    // and not accepted.
     const deletionInfo = await this.prisma.userVerification.deleteMany({
       where: {
+        status: {
+          not: VerificationStatus.accepted,
+        },
         createdAt: {
           lt: new Date(today),
         },
@@ -39,14 +44,14 @@ export class VerificationService implements OnModuleInit {
   async getByUserId(userId: string) {
     await this.clearStale();
 
-    const today = this.getTimeThreshold();
+    // const today = this.getTimeThreshold();
 
     return this.prisma.userVerification.findFirst({
       where: {
         userId,
-        createdAt: {
-          gte: new Date(today),
-        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
       },
     });
   }
@@ -78,4 +83,6 @@ export class VerificationService implements OnModuleInit {
       secret,
     });
   }
+
+  // async verify(): Promise<boolean>
 }
