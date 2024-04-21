@@ -6,6 +6,7 @@ import { JwtStrategy } from '@/auth/jwt.strategy';
 import { getJwtConfig } from '@/config/jwt.config';
 import { PrismaService } from '@/prisma.service';
 import { UserModule } from '@/user/user.module';
+import { VerificationService } from '@/verification.service';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -21,6 +22,6 @@ import { AuthService } from './auth.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, JwtStrategy],
+  providers: [AuthService, PrismaService, JwtStrategy, VerificationService],
 })
 export class AuthModule {}
