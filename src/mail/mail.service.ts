@@ -1,0 +1,69 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { renderAsync } from '@react-email/components';
+import { Resend } from 'resend';
+
+import { UserService } from '@/user/user.service';
+
+interface SendMailConfig {
+  email: string;
+  subject: string;
+  html?: string;
+}
+
+@Injectable()
+export class MailService {
+  private resend: Resend;
+
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService,
+  ) {
+    /** Resend`s API key */
+    const apiKey = configService.get<string>('RESEND_API_KEY');
+    this.resend = new Resend(apiKey);
+  }
+
+  /**
+   * Method that renders react-email components to string html.
+   * @param params
+   * @private
+   */
+  private async renderEmail(
+    ...params: Parameters<typeof renderAsync>
+  ): Promise<string> {
+    return renderAsync(...params);
+  }
+
+  /**
+   * This method sends email to given address.
+   */
+  async sendMailTo({ email, subject, html }: SendMailConfig) {
+    await this.resend.emails.send({
+      from: 'xenoplanner@resend.dev',
+      to: email,
+      subject,
+      html,
+    });
+  }
+
+  /**
+   * Send email to email of user with certain __userId__.
+   * @param userId
+   * @param params
+   */
+  async sendMailByUserId(
+    userId: string,
+    ...params: Parameters<typeof renderAsync>
+  ) {
+    const { email } = await this.userService.getById(userId);
+    const html = await this.renderEmail(...params);
+
+    /** Send email letter to user`s email address. */
+    await this.sendMailTo({
+      email,
+      subject: 'Подтверждение учетной записи',
+      html,
+    });
+  }
+}

@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
+  Param,
   Post,
+  Query,
   Req,
   Res,
   UnauthorizedException,
@@ -34,12 +37,9 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() dto: AuthDto,
-    @Res({ passthrough: true }) res: Response,
+    // @Res({ passthrough: true }) res: Response,
   ) {
-    const { refreshToken, ...response } = await this.authService.register(dto);
-    this.authService.addRefreshTokenToResponse(res, refreshToken);
-
-    return response;
+    return await this.authService.register(dto);
   }
 
   @HttpCode(200)
@@ -72,6 +72,19 @@ export class AuthController {
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
     this.authService.removeRefreshTokenFromResponse(res);
-    return true;
+
+    return {
+      logout: true,
+    };
+  }
+
+  @HttpCode(200)
+  @Get('verify/:userId')
+  async verifyUser(
+    @Param('userId') userId: string,
+    @Query('secret') secret: string,
+    @Res() res: Response,
+  ) {
+    return this.authService.verifyViaEmail(userId, secret, res);
   }
 }

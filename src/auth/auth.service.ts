@@ -1,23 +1,27 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { User, VerificationStatus } from '@prisma/client';
 import { verify } from 'argon2';
 import { CookieOptions, Response } from 'express';
 
+import { SanitizedUser } from '@/assets/types/SanitizedUser';
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { UserService } from '@/user/user.service';
+import { VerificationService } from '@/verification.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwt: JwtService,
     private readonly userService: UserService,
+    private readonly verificationService: VerificationService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -28,6 +32,15 @@ export class AuthService {
     // Get user and sanitize him
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.validateUser(dto);
+
+    // Check for verification
+    const verificationStatus = await this.getVerificationStatus(user);
+
+    // Continue only if user clicked
+    // Confirm account button from email.
+    if (verificationStatus !== VerificationStatus.accepted)
+      throw new BadRequestException('Confirm account from email.');
+
     /** Access and refresh tokens */
     const tokens = this.issueToken(user.id);
 
@@ -45,14 +58,37 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
-    const tokens = this.issueToken(user.id);
+
+    // Request verification
+    await this.verificationService.requestVerification(user.id);
 
     return {
-      user,
-      ...tokens,
+      verification: VerificationStatus.requested,
     };
   }
 
+  async verifyViaEmail(userId: string, secret: string, res: Response) {
+    try {
+      const isValid = await this.verificationService.verify(userId, secret);
+
+      if (!isValid)
+        throw new BadRequestException('Incorrect verification data.');
+
+      // Redirect to front-end page
+      // TODO Insert url like https://xeno-planner.vercel.app/auth/verify/accepted
+      res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    } catch (err) {
+      // Redirect to error page
+      // TODO Insert url like https://xeno-planner.vercel.app/auth/verify/denied
+      res.redirect('https://frontendchecklist.io/#section-performance');
+    }
+  }
+
+  /**
+   * Generates new tokens if given refreshToken
+   * is valid.
+   * @param refreshToken
+   */
   async getNewTokens(refreshToken: string) {
     const result = await this.jwt.verifyAsync(refreshToken);
     if (!result) throw new UnauthorizedException('Invalid refresh token');
@@ -68,6 +104,7 @@ export class AuthService {
     };
   }
 
+  /** Returns config for cookie response. */
   private getResponseConfig(): CookieOptions {
     const envMode =
       this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
@@ -93,7 +130,7 @@ export class AuthService {
     });
   }
 
-  /** Clear response`s cookie header. */
+  /** Clear cookie header of response. */
   removeRefreshTokenFromResponse(res: Response) {
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       ...this.getResponseConfig(),
@@ -119,6 +156,10 @@ export class AuthService {
     };
   }
 
+  /**
+   * Checks if user with certain email exists
+   * and return him.
+   */
   private async validateUser(dto: AuthDto) {
     const user = await this.userService.getByEmail(dto.email);
 
@@ -130,5 +171,20 @@ export class AuthService {
     if (!isValid) throw new UnauthorizedException('Invalid password');
 
     return user;
+  }
+
+  /** Checks if user has been verificated. */
+  private async getVerificationStatus({
+    id,
+  }: SanitizedUser): Promise<VerificationStatus> {
+    const verification = await this.verificationService.getByUserId(id);
+
+    /** No verification record was found. */
+    if (!verification) {
+      await this.userService.delete(id);
+      throw new ForbiddenException('Verification not requested for that user');
+    }
+
+    return verification.status;
   }
 }

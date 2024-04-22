@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model UserVerification
+ * 
+ */
+export type UserVerification = $Result.DefaultSelection<Prisma.$UserVerificationPayload>
+/**
  * Model Task
  * 
  */
@@ -43,7 +48,16 @@ export type PomodoroRound = $Result.DefaultSelection<Prisma.$PomodoroRoundPayloa
  * Enums
  */
 export namespace $Enums {
-  export const Priority: {
+  export const VerificationStatus: {
+  requested: 'requested',
+  accepted: 'accepted',
+  denied: 'denied'
+};
+
+export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus]
+
+
+export const Priority: {
   low: 'low',
   medium: 'medium',
   high: 'high'
@@ -52,6 +66,10 @@ export namespace $Enums {
 export type Priority = (typeof Priority)[keyof typeof Priority]
 
 }
+
+export type VerificationStatus = $Enums.VerificationStatus
+
+export const VerificationStatus: typeof $Enums.VerificationStatus
 
 export type Priority = $Enums.Priority
 
@@ -188,6 +206,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs>;
+
+  /**
+   * `prisma.userVerification`: Exposes CRUD operations for the **UserVerification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserVerifications
+    * const userVerifications = await prisma.userVerification.findMany()
+    * ```
+    */
+  get userVerification(): Prisma.UserVerificationDelegate<ExtArgs>;
 
   /**
    * `prisma.task`: Exposes CRUD operations for the **Task** model.
@@ -699,6 +727,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    UserVerification: 'UserVerification',
     Task: 'Task',
     TimeBlock: 'TimeBlock',
     PomodoroSession: 'PomodoroSession',
@@ -719,7 +748,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'task' | 'timeBlock' | 'pomodoroSession' | 'pomodoroRound'
+      modelProps: 'user' | 'userVerification' | 'task' | 'timeBlock' | 'pomodoroSession' | 'pomodoroRound'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -786,6 +815,72 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>,
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserVerification: {
+        payload: Prisma.$UserVerificationPayload<ExtArgs>
+        fields: Prisma.UserVerificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserVerificationFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserVerificationFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          findFirst: {
+            args: Prisma.UserVerificationFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserVerificationFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          findMany: {
+            args: Prisma.UserVerificationFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>[]
+          }
+          create: {
+            args: Prisma.UserVerificationCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          createMany: {
+            args: Prisma.UserVerificationCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.UserVerificationDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          update: {
+            args: Prisma.UserVerificationUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserVerificationDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserVerificationUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.UserVerificationUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$UserVerificationPayload>
+          }
+          aggregate: {
+            args: Prisma.UserVerificationAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateUserVerification>
+          }
+          groupBy: {
+            args: Prisma.UserVerificationGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<UserVerificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserVerificationCountArgs<ExtArgs>,
+            result: $Utils.Optional<UserVerificationCountAggregateOutputType> | number
           }
         }
       }
@@ -1540,6 +1635,7 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     timeBlocks?: boolean | User$timeBlocksArgs<ExtArgs>
     pomodoroSessions?: boolean | User$pomodoroSessionsArgs<ExtArgs>
+    userVerification?: boolean | User$userVerificationArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1559,6 +1655,7 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     timeBlocks?: boolean | User$timeBlocksArgs<ExtArgs>
     pomodoroSessions?: boolean | User$pomodoroSessionsArgs<ExtArgs>
+    userVerification?: boolean | User$userVerificationArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1569,6 +1666,7 @@ export namespace Prisma {
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       timeBlocks: Prisma.$TimeBlockPayload<ExtArgs>[]
       pomodoroSessions: Prisma.$PomodoroSessionPayload<ExtArgs>[]
+      userVerification: Prisma.$UserVerificationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1950,6 +2048,8 @@ export namespace Prisma {
     timeBlocks<T extends User$timeBlocksArgs<ExtArgs> = {}>(args?: Subset<T, User$timeBlocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeBlockPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     pomodoroSessions<T extends User$pomodoroSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pomodoroSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PomodoroSessionPayload<ExtArgs>, T, 'findMany'> | Null>;
+
+    userVerification<T extends User$userVerificationArgs<ExtArgs> = {}>(args?: Subset<T, User$userVerificationArgs<ExtArgs>>): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2363,6 +2463,22 @@ export namespace Prisma {
 
 
   /**
+   * User.userVerification
+   */
+  export type User$userVerificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    where?: UserVerificationWhereInput
+  }
+
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2374,6 +2490,935 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model UserVerification
+   */
+
+  export type AggregateUserVerification = {
+    _count: UserVerificationCountAggregateOutputType | null
+    _min: UserVerificationMinAggregateOutputType | null
+    _max: UserVerificationMaxAggregateOutputType | null
+  }
+
+  export type UserVerificationMinAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+    secret: string | null
+    status: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationMaxAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+    secret: string | null
+    status: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    secret: number
+    status: number
+    _all: number
+  }
+
+
+  export type UserVerificationMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    secret?: true
+    status?: true
+  }
+
+  export type UserVerificationMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    secret?: true
+    status?: true
+  }
+
+  export type UserVerificationCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    secret?: true
+    status?: true
+    _all?: true
+  }
+
+  export type UserVerificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserVerification to aggregate.
+     */
+    where?: UserVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVerifications to fetch.
+     */
+    orderBy?: UserVerificationOrderByWithRelationInput | UserVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserVerifications
+    **/
+    _count?: true | UserVerificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserVerificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserVerificationMaxAggregateInputType
+  }
+
+  export type GetUserVerificationAggregateType<T extends UserVerificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserVerification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserVerification[P]>
+      : GetScalarType<T[P], AggregateUserVerification[P]>
+  }
+
+
+
+
+  export type UserVerificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserVerificationWhereInput
+    orderBy?: UserVerificationOrderByWithAggregationInput | UserVerificationOrderByWithAggregationInput[]
+    by: UserVerificationScalarFieldEnum[] | UserVerificationScalarFieldEnum
+    having?: UserVerificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserVerificationCountAggregateInputType | true
+    _min?: UserVerificationMinAggregateInputType
+    _max?: UserVerificationMaxAggregateInputType
+  }
+
+  export type UserVerificationGroupByOutputType = {
+    id: string
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    secret: string
+    status: $Enums.VerificationStatus | null
+    _count: UserVerificationCountAggregateOutputType | null
+    _min: UserVerificationMinAggregateOutputType | null
+    _max: UserVerificationMaxAggregateOutputType | null
+  }
+
+  type GetUserVerificationGroupByPayload<T extends UserVerificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserVerificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserVerificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserVerificationGroupByOutputType[P]>
+            : GetScalarType<T[P], UserVerificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserVerificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    secret?: boolean
+    status?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userVerification"]>
+
+  export type UserVerificationSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    secret?: boolean
+    status?: boolean
+  }
+
+  export type UserVerificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+
+  export type $UserVerificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserVerification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      createdAt: Date
+      updatedAt: Date
+      userId: string
+      secret: string
+      status: $Enums.VerificationStatus | null
+    }, ExtArgs["result"]["userVerification"]>
+    composites: {}
+  }
+
+
+  type UserVerificationGetPayload<S extends boolean | null | undefined | UserVerificationDefaultArgs> = $Result.GetResult<Prisma.$UserVerificationPayload, S>
+
+  type UserVerificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserVerificationFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: UserVerificationCountAggregateInputType | true
+    }
+
+  export interface UserVerificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserVerification'], meta: { name: 'UserVerification' } }
+    /**
+     * Find zero or one UserVerification that matches the filter.
+     * @param {UserVerificationFindUniqueArgs} args - Arguments to find a UserVerification
+     * @example
+     * // Get one UserVerification
+     * const userVerification = await prisma.userVerification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserVerificationFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationFindUniqueArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one UserVerification that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {UserVerificationFindUniqueOrThrowArgs} args - Arguments to find a UserVerification
+     * @example
+     * // Get one UserVerification
+     * const userVerification = await prisma.userVerification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserVerificationFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first UserVerification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationFindFirstArgs} args - Arguments to find a UserVerification
+     * @example
+     * // Get one UserVerification
+     * const userVerification = await prisma.userVerification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserVerificationFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationFindFirstArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first UserVerification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationFindFirstOrThrowArgs} args - Arguments to find a UserVerification
+     * @example
+     * // Get one UserVerification
+     * const userVerification = await prisma.userVerification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserVerificationFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more UserVerifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserVerifications
+     * const userVerifications = await prisma.userVerification.findMany()
+     * 
+     * // Get first 10 UserVerifications
+     * const userVerifications = await prisma.userVerification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userVerificationWithIdOnly = await prisma.userVerification.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserVerificationFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a UserVerification.
+     * @param {UserVerificationCreateArgs} args - Arguments to create a UserVerification.
+     * @example
+     * // Create one UserVerification
+     * const UserVerification = await prisma.userVerification.create({
+     *   data: {
+     *     // ... data to create a UserVerification
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserVerificationCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationCreateArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many UserVerifications.
+     *     @param {UserVerificationCreateManyArgs} args - Arguments to create many UserVerifications.
+     *     @example
+     *     // Create many UserVerifications
+     *     const userVerification = await prisma.userVerification.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserVerificationCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UserVerification.
+     * @param {UserVerificationDeleteArgs} args - Arguments to delete one UserVerification.
+     * @example
+     * // Delete one UserVerification
+     * const UserVerification = await prisma.userVerification.delete({
+     *   where: {
+     *     // ... filter to delete one UserVerification
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserVerificationDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationDeleteArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one UserVerification.
+     * @param {UserVerificationUpdateArgs} args - Arguments to update one UserVerification.
+     * @example
+     * // Update one UserVerification
+     * const userVerification = await prisma.userVerification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserVerificationUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationUpdateArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more UserVerifications.
+     * @param {UserVerificationDeleteManyArgs} args - Arguments to filter UserVerifications to delete.
+     * @example
+     * // Delete a few UserVerifications
+     * const { count } = await prisma.userVerification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserVerificationDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserVerificationDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserVerifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserVerifications
+     * const userVerification = await prisma.userVerification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserVerificationUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserVerification.
+     * @param {UserVerificationUpsertArgs} args - Arguments to update or create a UserVerification.
+     * @example
+     * // Update or create a UserVerification
+     * const userVerification = await prisma.userVerification.upsert({
+     *   create: {
+     *     // ... data to create a UserVerification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserVerification we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserVerificationUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, UserVerificationUpsertArgs<ExtArgs>>
+    ): Prisma__UserVerificationClient<$Result.GetResult<Prisma.$UserVerificationPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of UserVerifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationCountArgs} args - Arguments to filter UserVerifications to count.
+     * @example
+     * // Count the number of UserVerifications
+     * const count = await prisma.userVerification.count({
+     *   where: {
+     *     // ... the filter for the UserVerifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserVerificationCountArgs>(
+      args?: Subset<T, UserVerificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserVerificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserVerification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserVerificationAggregateArgs>(args: Subset<T, UserVerificationAggregateArgs>): Prisma.PrismaPromise<GetUserVerificationAggregateType<T>>
+
+    /**
+     * Group by UserVerification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVerificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserVerificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserVerificationGroupByArgs['orderBy'] }
+        : { orderBy?: UserVerificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserVerificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserVerificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserVerification model
+   */
+  readonly fields: UserVerificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserVerification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserVerificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the UserVerification model
+   */ 
+  interface UserVerificationFieldRefs {
+    readonly id: FieldRef<"UserVerification", 'String'>
+    readonly createdAt: FieldRef<"UserVerification", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserVerification", 'DateTime'>
+    readonly userId: FieldRef<"UserVerification", 'String'>
+    readonly secret: FieldRef<"UserVerification", 'String'>
+    readonly status: FieldRef<"UserVerification", 'VerificationStatus'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * UserVerification findUnique
+   */
+  export type UserVerificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVerification to fetch.
+     */
+    where: UserVerificationWhereUniqueInput
+  }
+
+
+  /**
+   * UserVerification findUniqueOrThrow
+   */
+  export type UserVerificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVerification to fetch.
+     */
+    where: UserVerificationWhereUniqueInput
+  }
+
+
+  /**
+   * UserVerification findFirst
+   */
+  export type UserVerificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVerification to fetch.
+     */
+    where?: UserVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVerifications to fetch.
+     */
+    orderBy?: UserVerificationOrderByWithRelationInput | UserVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserVerifications.
+     */
+    cursor?: UserVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserVerifications.
+     */
+    distinct?: UserVerificationScalarFieldEnum | UserVerificationScalarFieldEnum[]
+  }
+
+
+  /**
+   * UserVerification findFirstOrThrow
+   */
+  export type UserVerificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVerification to fetch.
+     */
+    where?: UserVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVerifications to fetch.
+     */
+    orderBy?: UserVerificationOrderByWithRelationInput | UserVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserVerifications.
+     */
+    cursor?: UserVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserVerifications.
+     */
+    distinct?: UserVerificationScalarFieldEnum | UserVerificationScalarFieldEnum[]
+  }
+
+
+  /**
+   * UserVerification findMany
+   */
+  export type UserVerificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVerifications to fetch.
+     */
+    where?: UserVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVerifications to fetch.
+     */
+    orderBy?: UserVerificationOrderByWithRelationInput | UserVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserVerifications.
+     */
+    cursor?: UserVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVerifications.
+     */
+    skip?: number
+    distinct?: UserVerificationScalarFieldEnum | UserVerificationScalarFieldEnum[]
+  }
+
+
+  /**
+   * UserVerification create
+   */
+  export type UserVerificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserVerification.
+     */
+    data: XOR<UserVerificationCreateInput, UserVerificationUncheckedCreateInput>
+  }
+
+
+  /**
+   * UserVerification createMany
+   */
+  export type UserVerificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserVerifications.
+     */
+    data: UserVerificationCreateManyInput | UserVerificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * UserVerification update
+   */
+  export type UserVerificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserVerification.
+     */
+    data: XOR<UserVerificationUpdateInput, UserVerificationUncheckedUpdateInput>
+    /**
+     * Choose, which UserVerification to update.
+     */
+    where: UserVerificationWhereUniqueInput
+  }
+
+
+  /**
+   * UserVerification updateMany
+   */
+  export type UserVerificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserVerifications.
+     */
+    data: XOR<UserVerificationUpdateManyMutationInput, UserVerificationUncheckedUpdateManyInput>
+    /**
+     * Filter which UserVerifications to update
+     */
+    where?: UserVerificationWhereInput
+  }
+
+
+  /**
+   * UserVerification upsert
+   */
+  export type UserVerificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserVerification to update in case it exists.
+     */
+    where: UserVerificationWhereUniqueInput
+    /**
+     * In case the UserVerification found by the `where` argument doesn't exist, create a new UserVerification with this data.
+     */
+    create: XOR<UserVerificationCreateInput, UserVerificationUncheckedCreateInput>
+    /**
+     * In case the UserVerification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserVerificationUpdateInput, UserVerificationUncheckedUpdateInput>
+  }
+
+
+  /**
+   * UserVerification delete
+   */
+  export type UserVerificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
+    /**
+     * Filter which UserVerification to delete.
+     */
+    where: UserVerificationWhereUniqueInput
+  }
+
+
+  /**
+   * UserVerification deleteMany
+   */
+  export type UserVerificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserVerifications to delete
+     */
+    where?: UserVerificationWhereInput
+  }
+
+
+  /**
+   * UserVerification without action
+   */
+  export type UserVerificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVerification
+     */
+    select?: UserVerificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserVerificationInclude<ExtArgs> | null
   }
 
 
@@ -6245,6 +7290,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const UserVerificationScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId',
+    secret: 'secret',
+    status: 'status'
+  };
+
+  export type UserVerificationScalarFieldEnum = (typeof UserVerificationScalarFieldEnum)[keyof typeof UserVerificationScalarFieldEnum]
+
+
   export const TaskScalarFieldEnum: {
     id: 'id',
     createdAt: 'createdAt',
@@ -6367,6 +7424,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'VerificationStatus'
+   */
+  export type EnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VerificationStatus[]'
+   */
+  export type ListEnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Priority'
    */
   export type EnumPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Priority'>
@@ -6420,6 +7491,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     timeBlocks?: TimeBlockListRelationFilter
     pomodoroSessions?: PomodoroSessionListRelationFilter
+    userVerification?: XOR<UserVerificationNullableRelationFilter, UserVerificationWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6435,6 +7507,7 @@ export namespace Prisma {
     tasks?: TaskOrderByRelationAggregateInput
     timeBlocks?: TimeBlockOrderByRelationAggregateInput
     pomodoroSessions?: PomodoroSessionOrderByRelationAggregateInput
+    userVerification?: UserVerificationOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6453,6 +7526,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     timeBlocks?: TimeBlockListRelationFilter
     pomodoroSessions?: PomodoroSessionListRelationFilter
+    userVerification?: XOR<UserVerificationNullableRelationFilter, UserVerificationWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6485,6 +7559,66 @@ export namespace Prisma {
     workInterval?: IntNullableWithAggregatesFilter<"User"> | number | null
     breakInterval?: IntNullableWithAggregatesFilter<"User"> | number | null
     intervalsCount?: IntNullableWithAggregatesFilter<"User"> | number | null
+  }
+
+  export type UserVerificationWhereInput = {
+    AND?: UserVerificationWhereInput | UserVerificationWhereInput[]
+    OR?: UserVerificationWhereInput[]
+    NOT?: UserVerificationWhereInput | UserVerificationWhereInput[]
+    id?: StringFilter<"UserVerification"> | string
+    createdAt?: DateTimeFilter<"UserVerification"> | Date | string
+    updatedAt?: DateTimeFilter<"UserVerification"> | Date | string
+    userId?: StringFilter<"UserVerification"> | string
+    secret?: StringFilter<"UserVerification"> | string
+    status?: EnumVerificationStatusNullableFilter<"UserVerification"> | $Enums.VerificationStatus | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type UserVerificationOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    secret?: SortOrder
+    status?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserVerificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: UserVerificationWhereInput | UserVerificationWhereInput[]
+    OR?: UserVerificationWhereInput[]
+    NOT?: UserVerificationWhereInput | UserVerificationWhereInput[]
+    createdAt?: DateTimeFilter<"UserVerification"> | Date | string
+    updatedAt?: DateTimeFilter<"UserVerification"> | Date | string
+    secret?: StringFilter<"UserVerification"> | string
+    status?: EnumVerificationStatusNullableFilter<"UserVerification"> | $Enums.VerificationStatus | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type UserVerificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    secret?: SortOrder
+    status?: SortOrderInput | SortOrder
+    _count?: UserVerificationCountOrderByAggregateInput
+    _max?: UserVerificationMaxOrderByAggregateInput
+    _min?: UserVerificationMinOrderByAggregateInput
+  }
+
+  export type UserVerificationScalarWhereWithAggregatesInput = {
+    AND?: UserVerificationScalarWhereWithAggregatesInput | UserVerificationScalarWhereWithAggregatesInput[]
+    OR?: UserVerificationScalarWhereWithAggregatesInput[]
+    NOT?: UserVerificationScalarWhereWithAggregatesInput | UserVerificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserVerification"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"UserVerification"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserVerification"> | Date | string
+    userId?: StringWithAggregatesFilter<"UserVerification"> | string
+    secret?: StringWithAggregatesFilter<"UserVerification"> | string
+    status?: EnumVerificationStatusNullableWithAggregatesFilter<"UserVerification"> | $Enums.VerificationStatus | null
   }
 
   export type TaskWhereInput = {
@@ -6757,6 +7891,7 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     timeBlocks?: TimeBlockCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6772,6 +7907,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     timeBlocks?: TimeBlockUncheckedCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6787,6 +7923,7 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     timeBlocks?: TimeBlockUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6802,6 +7939,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     timeBlocks?: TimeBlockUncheckedUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6838,6 +7976,68 @@ export namespace Prisma {
     workInterval?: NullableIntFieldUpdateOperationsInput | number | null
     breakInterval?: NullableIntFieldUpdateOperationsInput | number | null
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UserVerificationCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secret: string
+    status?: $Enums.VerificationStatus | null
+    user: UserCreateNestedOneWithoutUserVerificationInput
+  }
+
+  export type UserVerificationUncheckedCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    secret: string
+    status?: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
+    user?: UserUpdateOneRequiredWithoutUserVerificationNestedInput
+  }
+
+  export type UserVerificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationCreateManyInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    secret: string
+    status?: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
   }
 
   export type TaskCreateInput = {
@@ -7176,6 +8376,11 @@ export namespace Prisma {
     none?: PomodoroSessionWhereInput
   }
 
+  export type UserVerificationNullableRelationFilter = {
+    is?: UserVerificationWhereInput | null
+    isNot?: UserVerificationWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7307,6 +8512,55 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type EnumVerificationStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumVerificationStatusNullableFilter<$PrismaModel> | $Enums.VerificationStatus | null
+  }
+
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type UserVerificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    secret?: SortOrder
+    status?: SortOrder
+  }
+
+  export type UserVerificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    secret?: SortOrder
+    status?: SortOrder
+  }
+
+  export type UserVerificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    secret?: SortOrder
+    status?: SortOrder
+  }
+
+  export type EnumVerificationStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumVerificationStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.VerificationStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumVerificationStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumVerificationStatusNullableFilter<$PrismaModel>
+  }
+
   export type EnumPriorityNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel> | null
     in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel> | null
@@ -7317,11 +8571,6 @@ export namespace Prisma {
   export type BoolNullableFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type TaskCountOrderByAggregateInput = {
@@ -7537,6 +8786,12 @@ export namespace Prisma {
     connect?: PomodoroSessionWhereUniqueInput | PomodoroSessionWhereUniqueInput[]
   }
 
+  export type UserVerificationCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserVerificationCreateOrConnectWithoutUserInput
+    connect?: UserVerificationWhereUniqueInput
+  }
+
   export type TaskUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
@@ -7556,6 +8811,12 @@ export namespace Prisma {
     connectOrCreate?: PomodoroSessionCreateOrConnectWithoutUserInput | PomodoroSessionCreateOrConnectWithoutUserInput[]
     createMany?: PomodoroSessionCreateManyUserInputEnvelope
     connect?: PomodoroSessionWhereUniqueInput | PomodoroSessionWhereUniqueInput[]
+  }
+
+  export type UserVerificationUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserVerificationCreateOrConnectWithoutUserInput
+    connect?: UserVerificationWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -7620,6 +8881,16 @@ export namespace Prisma {
     deleteMany?: PomodoroSessionScalarWhereInput | PomodoroSessionScalarWhereInput[]
   }
 
+  export type UserVerificationUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserVerificationCreateOrConnectWithoutUserInput
+    upsert?: UserVerificationUpsertWithoutUserInput
+    disconnect?: UserVerificationWhereInput | boolean
+    delete?: UserVerificationWhereInput | boolean
+    connect?: UserVerificationWhereUniqueInput
+    update?: XOR<XOR<UserVerificationUpdateToOneWithWhereWithoutUserInput, UserVerificationUpdateWithoutUserInput>, UserVerificationUncheckedUpdateWithoutUserInput>
+  }
+
   export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
@@ -7660,6 +8931,34 @@ export namespace Prisma {
     update?: PomodoroSessionUpdateWithWhereUniqueWithoutUserInput | PomodoroSessionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PomodoroSessionUpdateManyWithWhereWithoutUserInput | PomodoroSessionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PomodoroSessionScalarWhereInput | PomodoroSessionScalarWhereInput[]
+  }
+
+  export type UserVerificationUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserVerificationCreateOrConnectWithoutUserInput
+    upsert?: UserVerificationUpsertWithoutUserInput
+    disconnect?: UserVerificationWhereInput | boolean
+    delete?: UserVerificationWhereInput | boolean
+    connect?: UserVerificationWhereUniqueInput
+    update?: XOR<XOR<UserVerificationUpdateToOneWithWhereWithoutUserInput, UserVerificationUpdateWithoutUserInput>, UserVerificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserCreateNestedOneWithoutUserVerificationInput = {
+    create?: XOR<UserCreateWithoutUserVerificationInput, UserUncheckedCreateWithoutUserVerificationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserVerificationInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableEnumVerificationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VerificationStatus | null
+  }
+
+  export type UserUpdateOneRequiredWithoutUserVerificationNestedInput = {
+    create?: XOR<UserCreateWithoutUserVerificationInput, UserUncheckedCreateWithoutUserVerificationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserVerificationInput
+    upsert?: UserUpsertWithoutUserVerificationInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserVerificationInput, UserUpdateWithoutUserVerificationInput>, UserUncheckedUpdateWithoutUserVerificationInput>
   }
 
   export type UserCreateNestedOneWithoutTasksInput = {
@@ -7912,6 +9211,23 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumVerificationStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumVerificationStatusNullableFilter<$PrismaModel> | $Enums.VerificationStatus | null
+  }
+
+  export type NestedEnumVerificationStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.VerificationStatus[] | ListEnumVerificationStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumVerificationStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.VerificationStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumVerificationStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumVerificationStatusNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumPriorityNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel> | null
     in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel> | null
@@ -8053,6 +9369,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserVerificationCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secret: string
+    status?: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    secret: string
+    status?: $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationCreateOrConnectWithoutUserInput = {
+    where: UserVerificationWhereUniqueInput
+    create: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+  }
+
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
     where: TaskWhereUniqueInput
     update: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
@@ -8139,6 +9476,109 @@ export namespace Prisma {
     userId?: StringFilter<"PomodoroSession"> | string
   }
 
+  export type UserVerificationUpsertWithoutUserInput = {
+    update: XOR<UserVerificationUpdateWithoutUserInput, UserVerificationUncheckedUpdateWithoutUserInput>
+    create: XOR<UserVerificationCreateWithoutUserInput, UserVerificationUncheckedCreateWithoutUserInput>
+    where?: UserVerificationWhereInput
+  }
+
+  export type UserVerificationUpdateToOneWithWhereWithoutUserInput = {
+    where?: UserVerificationWhereInput
+    data: XOR<UserVerificationUpdateWithoutUserInput, UserVerificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserVerificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
+  }
+
+  export type UserVerificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secret?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus | null
+  }
+
+  export type UserCreateWithoutUserVerificationInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    password: string
+    workInterval?: number | null
+    breakInterval?: number | null
+    intervalsCount?: number | null
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    timeBlocks?: TimeBlockCreateNestedManyWithoutUserInput
+    pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserVerificationInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    password: string
+    workInterval?: number | null
+    breakInterval?: number | null
+    intervalsCount?: number | null
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    timeBlocks?: TimeBlockUncheckedCreateNestedManyWithoutUserInput
+    pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserVerificationInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserVerificationInput, UserUncheckedCreateWithoutUserVerificationInput>
+  }
+
+  export type UserUpsertWithoutUserVerificationInput = {
+    update: XOR<UserUpdateWithoutUserVerificationInput, UserUncheckedUpdateWithoutUserVerificationInput>
+    create: XOR<UserCreateWithoutUserVerificationInput, UserUncheckedCreateWithoutUserVerificationInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserVerificationInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserVerificationInput, UserUncheckedUpdateWithoutUserVerificationInput>
+  }
+
+  export type UserUpdateWithoutUserVerificationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    workInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    breakInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    timeBlocks?: TimeBlockUpdateManyWithoutUserNestedInput
+    pomodoroSessions?: PomodoroSessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserVerificationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    workInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    breakInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    timeBlocks?: TimeBlockUncheckedUpdateManyWithoutUserNestedInput
+    pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutTasksInput = {
     id?: string
     createdAt?: Date | string
@@ -8151,6 +9591,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     timeBlocks?: TimeBlockCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -8165,6 +9606,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     timeBlocks?: TimeBlockUncheckedCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -8195,6 +9637,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     timeBlocks?: TimeBlockUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -8209,6 +9652,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     timeBlocks?: TimeBlockUncheckedUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTimeBlocksInput = {
@@ -8223,6 +9667,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     tasks?: TaskCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTimeBlocksInput = {
@@ -8237,6 +9682,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTimeBlocksInput = {
@@ -8267,6 +9713,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     tasks?: TaskUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTimeBlocksInput = {
@@ -8281,6 +9728,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPomodoroSessionsInput = {
@@ -8295,6 +9743,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     tasks?: TaskCreateNestedManyWithoutUserInput
     timeBlocks?: TimeBlockCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPomodoroSessionsInput = {
@@ -8309,6 +9758,7 @@ export namespace Prisma {
     intervalsCount?: number | null
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     timeBlocks?: TimeBlockUncheckedCreateNestedManyWithoutUserInput
+    userVerification?: UserVerificationUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPomodoroSessionsInput = {
@@ -8365,6 +9815,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     tasks?: TaskUpdateManyWithoutUserNestedInput
     timeBlocks?: TimeBlockUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPomodoroSessionsInput = {
@@ -8379,6 +9830,7 @@ export namespace Prisma {
     intervalsCount?: NullableIntFieldUpdateOperationsInput | number | null
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     timeBlocks?: TimeBlockUncheckedUpdateManyWithoutUserNestedInput
+    userVerification?: UserVerificationUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type PomodoroRoundUpsertWithWhereUniqueWithoutPomodoroSessionInput = {
@@ -8612,6 +10064,10 @@ export namespace Prisma {
      * @deprecated Use UserDefaultArgs instead
      */
     export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserVerificationDefaultArgs instead
+     */
+    export type UserVerificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserVerificationDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TaskDefaultArgs instead
      */
