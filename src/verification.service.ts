@@ -85,7 +85,7 @@ export class VerificationService implements OnModuleInit {
      * Send email to user. Email will be fetched from database.
      * If this throws, no verification record will be created.
      */
-    await this.mailService.sendMail(
+    await this.mailService.sendMailByUserId(
       userId,
       VerificationTemplate({ url: linkToVerification }),
     );
