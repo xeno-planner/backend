@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
-import { Transporter, createTransport } from 'nodemailer';
 
 import { UserService } from '@/user/user.service';
 
@@ -13,43 +12,10 @@ interface SendMailConfig {
 
 @Injectable()
 export class MailService {
-  private transporter: Transporter;
-
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-  ) {
-    // Connection data
-    const host = this.configService.get('MAIL_HOST');
-    const port = Number(this.configService.get('MAIL_PORT')) || 0;
-    const secure = this.configService.get('MAILER_SECURE') === 'true';
-
-    // Auth
-    const user = this.configService.get('MAIL_USER');
-    const password = this.configService.get('MAIL_PASSWORD');
-
-    // From
-    const fromName = this.configService.get('MAIL_FROM_NAME');
-    const fromAddress = this.configService.get('MAIL_FROM_ADDRESS');
-
-    this.transporter = createTransport(
-      {
-        host,
-        port,
-        secure,
-        auth: {
-          user,
-          pass: password,
-        },
-      },
-      {
-        from: {
-          name: fromName,
-          address: fromAddress,
-        },
-      },
-    );
-  }
+  ) {}
 
   /**
    * Method that renders react-email components to string html.
@@ -64,17 +30,8 @@ export class MailService {
 
   /**
    * This method sends email to given address.
-   * @param email
-   * @param subject
-   * @param html
    */
-  async sendMailTo({ email, subject, html }: SendMailConfig) {
-    await this.transporter.sendMail({
-      to: email,
-      subject,
-      html,
-    });
-  }
+  async sendMailTo({}: SendMailConfig) {}
 
   /**
    * Send email to email of user with certain __userId__.
