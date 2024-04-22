@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react'
 import { Font, Head } from '@react-email/components';
 
 export const Header = () => {

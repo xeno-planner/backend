@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react'
 import { Button } from '@react-email/components';
 
 const MyButton = ({ url, children }: { url: string, children?: string }) => {

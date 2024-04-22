@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import * as React from 'react'
 import { Header } from '@/assets/templates/components/Header';
 import { Html } from '@react-email/components';
 
-const EmailLayout = ({ children }: { children: ReactNode }) => {
+const EmailLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Html
       style={{

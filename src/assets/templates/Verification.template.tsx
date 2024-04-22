@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react'
 import MyButton from './components/MyButton';
 import EmailLayout from '@/assets/templates/components/EmailLayout';
 import { Heading } from '@react-email/components';
