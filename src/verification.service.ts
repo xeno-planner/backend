@@ -65,10 +65,6 @@ export class VerificationService implements OnModuleInit {
    * This method contains logic related to
    * sending email and creating verification record in database.
    *
-   * @todo
-   * Find bug inside this method, that throw error on
-   * mail generation.
-   *
    * @param userId
    */
   async requestVerification(userId: string) {
@@ -78,8 +74,8 @@ export class VerificationService implements OnModuleInit {
     /** Not encoded secret word yet. */
     const secret = randomStringGenerator();
 
-    // TODO form email letter with link to verification (http://APP_FULL_URL/api/auth/verify/:userId?secret=)
-    const linkToVerification = `${appUrl}/auth/verify/${userId}?secret=${secret}`;
+    /** Link for button in email letter. */
+    const linkToVerification = `${appUrl}/api/auth/verify/${userId}?secret=${secret}`;
 
     /**
      * Send email to user. Email will be fetched from database.

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
+import { Resend } from 'resend';
 
 import { UserService } from '@/user/user.service';
 
@@ -12,10 +13,16 @@ interface SendMailConfig {
 
 @Injectable()
 export class MailService {
+  private resend: Resend;
+
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    /** Resend`s API key */
+    const apiKey = configService.get<string>('RESEND_API_KEY');
+    this.resend = new Resend(apiKey);
+  }
 
   /**
    * Method that renders react-email components to string html.
@@ -32,8 +39,9 @@ export class MailService {
    * This method sends email to given address.
    */
   async sendMailTo({ email, subject, html }: SendMailConfig) {
-    console.log({
-      email,
+    await this.resend.emails.send({
+      from: 'xenoplanner@resend.dev',
+      to: email,
       subject,
       html,
     });
