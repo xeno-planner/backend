@@ -8,6 +8,17 @@ export class MailService {
   constructor(private readonly userService: UserService) {}
 
   /**
+   * Method that renders react-email components to string html.
+   * @param params
+   * @private
+   */
+  private async renderEmail(
+    ...params: Parameters<typeof renderAsync>
+  ): Promise<string> {
+    return renderAsync(...params);
+  }
+
+  /**
    * Send email to email of user with certain __userId__.
    * @param userId
    * @param params
@@ -16,13 +27,11 @@ export class MailService {
     userId: string,
     ...params: Parameters<typeof renderAsync>
   ) {
-    const { email } = await this.userService.getById(userId);
-
-    /** Rendered html content as string. */
-    const html = await renderAsync(...params);
+    const { email: emailAddress } = await this.userService.getById(userId);
+    const html = await this.renderEmail(...params);
 
     console.log({
-      email,
+      emailAddress,
       html,
     });
   }
