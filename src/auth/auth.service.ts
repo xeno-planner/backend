@@ -68,6 +68,9 @@ export class AuthService {
   }
 
   async verifyViaEmail(userId: string, secret: string, res: Response) {
+    /** Link to deployed front-end app. */
+    const frontEndUrl = this.configService.get<string>('FRONT_END_HOST');
+
     try {
       const isValid = await this.verificationService.verify(userId, secret);
 
@@ -75,12 +78,10 @@ export class AuthService {
         throw new BadRequestException('Incorrect verification data.');
 
       // Redirect to front-end page
-      // TODO Insert url like https://xeno-planner.vercel.app/auth/verify/accepted
-      res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+      res.redirect(`${frontEndUrl}/auth/verify/accepted`);
     } catch (err) {
       // Redirect to error page
-      // TODO Insert url like https://xeno-planner.vercel.app/auth/verify/denied
-      res.redirect('https://frontendchecklist.io/#section-performance');
+      res.redirect(`${frontEndUrl}/auth/verify/expired`);
     }
   }
 
