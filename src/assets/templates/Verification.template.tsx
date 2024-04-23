@@ -1,16 +1,21 @@
 import * as React from 'react'
 import MyButton from './components/MyButton';
 import EmailLayout from '@/assets/templates/components/EmailLayout';
-import { Heading } from '@react-email/components';
+import { Heading, Section } from '@react-email/components';
 
 const VerificationTemplate = ({ url }: { url: string }) => {
   return (
     <EmailLayout>
-      <Heading as={'h1'}>Подтверждение учетной записи на сайте XENO Planner</Heading>
+      <Heading
+        as={'h2'}
+      >
+        Подтверждение учетной записи на сайте XENO Planner</Heading>
 
-      <MyButton url={url}>
-        Подтвердить регистрацию
-      </MyButton>
+      <Section>
+        <MyButton url={url}>
+          Подтвердить регистрацию
+        </MyButton>
+      </Section>
     </EmailLayout>
   );
 };
