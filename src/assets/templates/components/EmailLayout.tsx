@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Header } from '@/assets/templates/components/Header';
-import { Html } from '@react-email/components';
+import { Html, Section } from '@react-email/components';
+import Logo from '@/assets/templates/components/Logo';
 
 const EmailLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,7 +14,15 @@ const EmailLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <Header />
 
-      {children}
+      <Logo />
+
+      <Section
+        style={{
+          padding: '0 24px 24px'
+        }}
+      >
+        {children}
+      </Section>
     </Html>
   );
 };
