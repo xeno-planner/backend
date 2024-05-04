@@ -12,6 +12,9 @@ export class TaskService {
       where: {
         userId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
