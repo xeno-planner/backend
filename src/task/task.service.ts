@@ -13,7 +13,7 @@ export class TaskService {
         userId,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     });
   }
