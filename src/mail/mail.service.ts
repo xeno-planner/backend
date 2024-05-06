@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
-import { Resend } from 'resend';
 
 import { UserService } from '@/user/user.service';
 
@@ -13,8 +12,6 @@ interface SendMailConfig {
 
 @Injectable()
 export class MailService {
-  private resend: Resend;
-
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
