@@ -22,6 +22,8 @@
     "prepare": "husky",
     "migrate:dev": "npx prisma migrate dev",
     "pack:type": "prisma generate && esno .dev/scripts/pack-types.ts",
+    "pack:env": "esno .dev/scripts/pack-env.ts",
+    "pack:all": "yarn pack:type && yarn pack:env",
     "studio": "prisma studio",
     "email:dev": "email dev --dir \"src/assets/templates\" -p 3300"
   },
