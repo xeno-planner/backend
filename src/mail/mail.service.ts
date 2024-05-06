@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
+import { Transporter, createTransport } from 'nodemailer';
 
 import { UserService } from '@/user/user.service';
 
@@ -12,10 +13,21 @@ interface SendMailConfig {
 
 @Injectable()
 export class MailService {
+  private transporter: Transporter = null;
+
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    this.transporter = createTransport({
+      service: 'Gmail',
+      auth: {
+        user: this.configService.get('SMTP_EMAIL_HOST_USER'),
+        pass: this.configService.get('SMTP_EMAIL_HOST_PASSWORD'),
+      },
+      secure: true,
+    });
+  }
 
   /**
    * Method that renders react-email components to string html.
@@ -32,7 +44,14 @@ export class MailService {
    * This method sends email to given address.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async sendMailTo({ email, subject, html }: SendMailConfig) {}
+  async sendMailTo({ email, subject, html }: SendMailConfig) {
+    await this.transporter.sendMail({
+      from: this.configService.get('SMTP_EMAIL_HOST_USER'),
+      to: email,
+      subject,
+      html,
+    });
+  }
 
   /**
    * Send email to email of user with certain __userId__.
