@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
 import { Resend } from 'resend';
@@ -22,11 +18,7 @@ export class MailService {
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-  ) {
-    /** Resend`s API key */
-    const apiKey = configService.get<string>('RESEND_API_KEY');
-    this.resend = new Resend(apiKey);
-  }
+  ) {}
 
   /**
    * Method that renders react-email components to string html.
@@ -42,22 +34,8 @@ export class MailService {
   /**
    * This method sends email to given address.
    */
-  async sendMailTo({ email, subject, html }: SendMailConfig) {
-    const { error } = await this.resend.emails.send({
-      from: 'xenoplanner@resend.dev',
-      to: email,
-      subject,
-      html,
-    });
-
-    // Handle Resend error
-    if (error) {
-      Logger.warn(`Resend threw an error: ${JSON.stringify(error)}`);
-      throw new ServiceUnavailableException(
-        'Resend API разрешает отправлять письма только на почту создателей (в целях тестирования).',
-      );
-    }
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async sendMailTo({ email, subject, html }: SendMailConfig) {}
 
   /**
    * Send email to email of user with certain __userId__.
