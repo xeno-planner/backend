@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  Logger,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
-import { Resend } from 'resend';
+import { Transporter, createTransport } from 'nodemailer';
 
 import { UserService } from '@/user/user.service';
 
@@ -17,15 +13,20 @@ interface SendMailConfig {
 
 @Injectable()
 export class MailService {
-  private resend: Resend;
+  private transporter: Transporter = null;
 
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {
-    /** Resend`s API key */
-    const apiKey = configService.get<string>('RESEND_API_KEY');
-    this.resend = new Resend(apiKey);
+    this.transporter = createTransport({
+      service: 'Gmail',
+      auth: {
+        user: this.configService.get('SMTP_EMAIL_HOST_USER'),
+        pass: this.configService.get('SMTP_EMAIL_HOST_PASSWORD'),
+      },
+      secure: true,
+    });
   }
 
   /**
@@ -42,21 +43,14 @@ export class MailService {
   /**
    * This method sends email to given address.
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async sendMailTo({ email, subject, html }: SendMailConfig) {
-    const { error } = await this.resend.emails.send({
-      from: 'xenoplanner@resend.dev',
+    await this.transporter.sendMail({
+      from: this.configService.get('SMTP_EMAIL_HOST_USER'),
       to: email,
       subject,
       html,
     });
-
-    // Handle Resend error
-    if (error) {
-      Logger.warn(`Resend threw an error: ${JSON.stringify(error)}`);
-      throw new ServiceUnavailableException(
-        'Resend API разрешает отправлять письма только на почту создателей (в целях тестирования).',
-      );
-    }
   }
 
   /**
