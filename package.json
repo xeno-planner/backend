@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "yarn pack:type",
     "build": "rimraf dist && nest build",
     "add-build": "git add dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
