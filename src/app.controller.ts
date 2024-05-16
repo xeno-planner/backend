@@ -9,6 +9,8 @@ export class AppController {
   @Get()
   @HttpCode(200)
   async helloWorld() {
-    return 'Hello world!';
+    return {
+      status: 'running',
+    };
   }
 }
