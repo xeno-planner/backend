@@ -26,7 +26,8 @@
     "pack:env": "esno .dev/scripts/pack-env.ts",
     "pack:all": "yarn pack:type && yarn pack:env",
     "studio": "prisma studio",
-    "email:dev": "email dev --dir \"src/assets/templates\" -p 3300"
+    "email:dev": "email dev --dir \"src/assets/templates\" -p 3300",
+    "deploy": "/.dev/sh/deploy.sh"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.11.2",
