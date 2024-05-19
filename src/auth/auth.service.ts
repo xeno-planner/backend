@@ -116,8 +116,7 @@ export class AuthService {
       // true if production
       secure: envMode === 'prod',
       // lax if production
-      // sameSite: envMode === 'prod' ? 'lax' : 'none',
-      sameSite: 'none',
+      sameSite: envMode === 'prod' ? 'none' : 'lax',
       priority: 'high',
     };
   }
