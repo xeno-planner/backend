@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -109,6 +110,10 @@ export class AuthService {
   private getResponseConfig(): CookieOptions {
     const envMode =
       this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
+
+    Logger.log(
+      `Will change http-only cookie at ${this.configService.get('APP_HOST')}`,
+    );
 
     return {
       httpOnly: true,
