@@ -123,6 +123,7 @@ export class AuthService {
       // lax if production
       sameSite: envMode === 'prod' ? 'none' : 'lax',
       priority: 'high',
+      partitioned: true,
     };
   }
 
