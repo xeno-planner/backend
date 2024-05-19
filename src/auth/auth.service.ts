@@ -25,7 +25,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  EXPIRE_DAY_REFRESH_TOKEN: number = 1;
+  EXPIRE_DAY_REFRESH_TOKEN: number = 7;
   REFRESH_TOKEN_NAME: string = 'refreshToken';
 
   async login(dto: AuthDto) {
