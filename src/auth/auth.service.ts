@@ -108,8 +108,8 @@ export class AuthService {
 
   /** Returns config for cookie response. */
   private getResponseConfig(): CookieOptions {
-    const envMode =
-      this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
+    // const envMode =
+    //   this.configService.get<'dev' | 'prod' | undefined>('ENV_MODE') || 'dev';
 
     Logger.log(
       `Will change http-only cookie at ${this.configService.get('APP_HOST')}`,
@@ -119,11 +119,11 @@ export class AuthService {
       httpOnly: true,
       domain: this.configService.get('APP_HOST'),
       // true if production
-      secure: envMode === 'prod',
+      // secure: envMode === 'prod',
       // lax if production
-      sameSite: envMode === 'prod' ? 'none' : 'lax',
+      sameSite: 'lax',
       priority: 'high',
-      partitioned: true,
+      // partitioned: true,
     };
   }
 
