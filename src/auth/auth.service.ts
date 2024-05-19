@@ -128,7 +128,7 @@ export class AuthService {
 
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       ...this.getResponseConfig(),
-      expires: expiresIn,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
   }
 
