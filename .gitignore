@@ -22,8 +22,11 @@ lerna-debug.log*
 /coverage
 /.nyc_output
 
+# IntelliJ based IDEs
+/.idea/*
+!/.idea/icon.svg
+
 # IDEs and editors
-/.idea
 .project
 .classpath
 .c9/
