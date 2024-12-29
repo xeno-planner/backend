@@ -13,6 +13,7 @@ COPY yarn.lock ./
 COPY ./prisma ./
 
 # Debug!
+RUN ls -a
 RUN ls ./prisma -a
 
 # Install the application dependencies
