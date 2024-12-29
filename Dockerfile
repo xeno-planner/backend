@@ -10,10 +10,10 @@ ENV NODE_ENV=production
 # Copy configs to the working directory
 COPY package*.json ./
 COPY yarn.lock ./
-COPY ./prisma ./
+COPY ./prisma/* ./prisma/*
 
 # Debug!
-RUN ls ./usr/src/app/prisma -a
+RUN ls ./usr/src/app -a
 
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
