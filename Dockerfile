@@ -11,6 +11,9 @@ ENV NODE_ENV=production
 COPY package*.json ./
 COPY yarn.lock ./
 
+# Debug!
+RUN ls -a
+
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
 
