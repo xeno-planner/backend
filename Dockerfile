@@ -7,9 +7,10 @@ FROM node:20-alpine
 # Setup environment
 ENV NODE_ENV=production
 
-# Copy package.json and yarn.lock to the working directory
+# Copy configs to the working directory
 COPY package*.json ./
 COPY yarn.lock ./
+COPY ./prisma/* ./prisma/*
 
 # Debug!
 RUN ls -a
