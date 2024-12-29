@@ -12,13 +12,14 @@ COPY package*.json ./
 COPY yarn.lock ./
 COPY ./prisma ./prisma
 
+# Clean cache to prevent server storage to overload
+RUN yarn cache clean
+
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .
-
-RUN ls -a
 
 # Build the NestJS application
 RUN yarn build
