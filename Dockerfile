@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Set the working directory inside the container
-# WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 # Setup environment
 ENV NODE_ENV=production
@@ -10,10 +10,10 @@ ENV NODE_ENV=production
 # Copy configs to the working directory
 COPY package*.json ./
 COPY yarn.lock ./
-COPY ./prisma/* ./prisma/*
+COPY prisma ./
 
 # Debug!
-RUN ls -a
+RUN ls/prisma -a
 
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
