@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "yarn pack:type",
-    "build": "rimraf dist && nest build",
+    "postinstall": "npx yarn pack:type",
+    "build": "rimraf dist && npx nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
