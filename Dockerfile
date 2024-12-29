@@ -13,7 +13,7 @@ COPY yarn.lock ./
 COPY ./prisma/* ./prisma/*
 
 # Debug!
-RUN ls ./usr/src/app -a
+RUN ls -a
 
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
