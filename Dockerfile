@@ -10,7 +10,7 @@ ENV NODE_ENV=production
 # Copy configs to the working directory
 COPY package*.json ./
 COPY yarn.lock ./
-COPY ./prisma/* ./prisma/*
+COPY ./prisma ./prisma
 
 # Debug!
 RUN ls -a prisma
