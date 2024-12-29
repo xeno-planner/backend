@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { HealthCheckModule } from './health-check/health-check.module';
 import { MailModule } from './mail/mail.module';
 import { PomodoroModule } from './pomodoro/pomodoro.module';
 import { TaskModule } from './task/task.module';
@@ -20,7 +19,6 @@ import { UserModule } from './user/user.module';
     TimeBlockModule,
     PomodoroModule,
     MailModule,
-    HealthCheckModule,
   ],
   controllers: [AppController],
   providers: [AppService],
