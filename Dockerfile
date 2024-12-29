@@ -1,8 +1,11 @@
 # Use the official Node.js image as the base image
-FROM node:20
+FROM node:20-alpine
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
+
+# Setup environment
+ENV NODE_ENV production
 
 # Copy package.json and yarn.lock to the working directory
 COPY package*.json ./
