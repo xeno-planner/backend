@@ -18,6 +18,9 @@ RUN yarn cache clean
 # Install the application dependencies
 RUN yarn install --frozen-lockfile
 
+# Clean cache to prevent server storage to overload
+RUN yarn cache clean
+
 # Copy the rest of the application files
 COPY . .
 
