@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npx yarn pack:type",
+    "postinstall": "npx yarn pack:type && yarn migrate:dev --name init",
     "build": "rimraf dist && npx nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "yarn start:prod",
