@@ -15,6 +15,6 @@ async function bootstrap() {
     exposedHeaders: 'set-cookie',
   });
 
-  await app.listen(3001);
+  await app.listen(3000);
 }
 bootstrap();
