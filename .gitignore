@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+/prisma/output.sql
 /build
 /.dev/generated
 /packages/types/**/*.js
