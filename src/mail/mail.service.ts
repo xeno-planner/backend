@@ -26,6 +26,7 @@ export class MailService {
         pass: this.configService.get('SMTP_EMAIL_HOST_PASSWORD'),
       },
       secure: true,
+      port: 465,
     });
   }
 
