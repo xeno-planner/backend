@@ -54,6 +54,7 @@ export type PomodoroRound = $Result.DefaultSelection<Prisma.$PomodoroRoundPayloa
  */
 export namespace $Enums {
   export const Permissions: {
+  all: 'all',
   canAccessAdminPage: 'canAccessAdminPage'
 };
 
