@@ -15,6 +15,6 @@ async function bootstrap() {
     exposedHeaders: 'set-cookie',
   });
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT ?? 3001);
 }
 bootstrap();
