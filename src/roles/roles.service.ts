@@ -2,12 +2,16 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Permissions } from '@prisma/client';
 
 import { PrismaService } from '@/prisma.service';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class RolesService implements OnModuleInit {
   private loggerCtx = 'Roles';
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userService: UserService,
+  ) {}
 
   async onModuleInit() {
     const adminRoles = await this.prisma.userRole.findMany({
@@ -32,5 +36,12 @@ export class RolesService implements OnModuleInit {
         },
       });
     }
+  }
+
+  /** Get all user`s permissions */
+  async getPermissionsById(userId: string) {
+    const { role } = await this.userService.getById(userId);
+
+    return role.permissions;
   }
 }
