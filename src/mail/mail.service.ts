@@ -1,13 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
 
+import { axiosForRusender } from '@/interceptors';
 import { UserService } from '@/user/user.service';
+
+import { MailDto } from './mail.dto';
 
 interface SendMailConfig {
   email: string;
   subject: string;
   html?: string;
+  previewTitle?: string;
+  name?: string;
 }
 
 @Injectable()
@@ -34,13 +39,33 @@ export class MailService {
    * @TODO Integrate Rusender API here.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async sendMailTo({ email, subject, html }: SendMailConfig) {
-    // await this.transporter.sendMail({
-    //   from: this.configService.get('SMTP_EMAIL_HOST_USER'),
-    //   to: email,
-    //   subject,
-    //   html,
-    // });
+  async sendMailTo({
+    email,
+    subject,
+    html,
+    previewTitle,
+    name,
+  }: SendMailConfig) {
+    const requestUrl = `/external-mails/send`;
+
+    const body: MailDto = {
+      mail: {
+        to: {
+          email,
+          name,
+        },
+        from: {
+          email: this.configService.get('SMTP_EMAIL_HOST_USER'),
+          name: 'XenoPLANNER',
+        },
+        subject,
+        previewTitle,
+        html,
+      },
+    };
+
+    await axiosForRusender.post(requestUrl, body);
+    throw new BadGatewayException();
   }
 
   /**

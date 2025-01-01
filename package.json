@@ -42,6 +42,7 @@
     "@react-email/components": "0.0.16",
     "@react-email/render": "^0.0.12",
     "argon2": "^0.40.1",
+    "axios": "^1.7.9",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
@@ -52,7 +53,8 @@
     "passport-jwt": "^4.0.1",
     "react-email": "2.1.1",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
