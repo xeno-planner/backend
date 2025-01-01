@@ -43,6 +43,8 @@ export class MailService {
 
   /**
    * This method sends email to given address.
+   *
+   * @TODO Integrate Rusender API here.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async sendMailTo({ email, subject, html }: SendMailConfig) {
