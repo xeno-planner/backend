@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
 
@@ -64,7 +64,9 @@ export class MailService {
       },
     };
 
-    await axiosForRusender.post(requestUrl, body);
+    await axiosForRusender.post(requestUrl, body).catch(err => {
+      Logger.error(err, 'MailService');
+    });
   }
 
   /**
