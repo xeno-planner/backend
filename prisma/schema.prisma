@@ -37,7 +37,7 @@ model User {
   pomodoroSessions PomodoroSession[]
   userVerification UserVerification?
   role             UserRole?         @relation(fields: [userRoleId], references: [id])
-  userRoleId       String            @map("role_id")
+  userRoleId       String?           @map("role_id")
 
   @@map("user")
 }
