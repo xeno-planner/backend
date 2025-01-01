@@ -1,4 +1,4 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
 
@@ -65,7 +65,6 @@ export class MailService {
     };
 
     await axiosForRusender.post(requestUrl, body);
-    throw new BadGatewayException();
   }
 
   /**
