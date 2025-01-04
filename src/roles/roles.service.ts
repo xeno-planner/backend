@@ -40,7 +40,9 @@ export class RolesService implements OnModuleInit {
 
   /** Get all user`s permissions */
   async getPermissionsById(userId: string): Promise<Permissions[]> {
-    const { role } = await this.userService.getById(userId);
+    const { role } = await this.userService.getById(userId, {
+      role: true,
+    });
 
     return !!role ? role.permissions : [];
   }
