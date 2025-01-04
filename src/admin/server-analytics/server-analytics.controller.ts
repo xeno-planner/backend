@@ -12,7 +12,10 @@ export class ServerAnalyticsController {
   ) {}
 
   @Get('/db/status')
-  @RequiresPermissions({ canAccessAdminPage: true, canViewDbStatus: true })
+  @RequiresPermissions({
+    canAccessAdminPage: true,
+    canViewDbStatus: true,
+  })
   @Auth()
   async getDbStatus() {
     return this.serverAnalyticsService.getDbStatus();
