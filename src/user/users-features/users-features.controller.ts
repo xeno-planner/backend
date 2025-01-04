@@ -1,17 +1,20 @@
-import { Controller, Get, HttpCode } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 
-import { Auth } from '@/auth/decorators/auth.decorator';
-import { RequiresPermissions } from '@/auth/guards/permissions.guard';
-
+import { FeatureRequest } from './user-features.decorators';
 import { UsersFeaturesService } from './users-features.service';
 
 @Controller('user/features')
 export class UsersFeaturesController {
   constructor(private readonly usersFeaturesService: UsersFeaturesService) {}
 
-  @HttpCode(200)
-  @Get('/can-access-admin-page')
-  @RequiresPermissions({ canAccessAdminPage: true })
-  @Auth()
+  @FeatureRequest('/can-access-admin-page', {
+    canAccessAdminPage: true,
+  })
   canAccessAdminPage() {}
+
+  @FeatureRequest('/can-view-db-status', {
+    canAccessAdminPage: true,
+    canViewDbStatus: true,
+  })
+  canViewDbStatus() {}
 }
