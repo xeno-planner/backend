@@ -54,6 +54,7 @@ model UserRole {
 enum Permissions {
   all
   canAccessAdminPage
+  canViewDbStatus
 }
 
 model UserVerification {
