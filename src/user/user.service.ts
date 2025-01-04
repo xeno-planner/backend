@@ -8,17 +8,20 @@ import { AuthDto } from '@/auth/dto/auth.dto';
 import { PrismaService } from '@/prisma.service';
 import { UserDto } from '@/user/dto/user.dto';
 
+type Include = Parameters<PrismaService['user']['findUnique']>[0]['include'];
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getById(id: User['id']) {
+  async getById(id: User['id'], include?: Include) {
     return this.prisma.user.findUnique({
       where: {
         id,
       },
       include: {
         tasks: true,
+        ...include,
       },
     });
   }

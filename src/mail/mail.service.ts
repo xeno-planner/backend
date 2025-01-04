@@ -1,34 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { renderAsync } from '@react-email/components';
-import { Transporter, createTransport } from 'nodemailer';
 
+import { axiosForRusender } from '@/interceptors';
 import { UserService } from '@/user/user.service';
+
+import { MailDto } from './mail.dto';
 
 interface SendMailConfig {
   email: string;
   subject: string;
   html?: string;
+  previewTitle?: string;
+  name?: string;
 }
 
 @Injectable()
 export class MailService {
-  private transporter: Transporter = null;
-
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-  ) {
-    this.transporter = createTransport({
-      service: 'Gmail',
-      auth: {
-        user: this.configService.get('SMTP_EMAIL_HOST_USER'),
-        pass: this.configService.get('SMTP_EMAIL_HOST_PASSWORD'),
-      },
-      secure: true,
-      port: 465,
-    });
-  }
+  ) {}
 
   /**
    * Method that renders react-email components to string html.
@@ -43,14 +35,37 @@ export class MailService {
 
   /**
    * This method sends email to given address.
+   *
+   * @TODO Integrate Rusender API here.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async sendMailTo({ email, subject, html }: SendMailConfig) {
-    await this.transporter.sendMail({
-      from: this.configService.get('SMTP_EMAIL_HOST_USER'),
-      to: email,
-      subject,
-      html,
+  async sendMailTo({
+    email,
+    subject,
+    html,
+    previewTitle,
+    name,
+  }: SendMailConfig) {
+    const requestUrl = `/external-mails/send`;
+
+    const body: MailDto = {
+      mail: {
+        to: {
+          email,
+          name,
+        },
+        from: {
+          email: this.configService.get('SMTP_EMAIL_HOST_USER'),
+          name: 'XenoPLANNER',
+        },
+        subject,
+        previewTitle,
+        html,
+      },
+    };
+
+    await axiosForRusender.post(requestUrl, body).catch(err => {
+      Logger.error(err, 'MailService');
     });
   }
 

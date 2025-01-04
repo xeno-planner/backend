@@ -36,8 +36,25 @@ model User {
   timeBlocks       TimeBlock[]
   pomodoroSessions PomodoroSession[]
   userVerification UserVerification?
+  role             UserRole?         @relation(fields: [userRoleId], references: [id])
+  userRoleId       String?           @map("role_id")
 
   @@map("user")
+}
+
+model UserRole {
+  id          String        @id @default(cuid())
+  name        String?
+  permissions Permissions[] @default([])
+  User        User[]
+
+  @@map("user_role")
+}
+
+enum Permissions {
+  all
+  canAccessAdminPage
+  canViewDbStatus
 }
 
 model UserVerification {

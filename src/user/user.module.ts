@@ -7,9 +7,10 @@ import { VerificationService } from '@/verification.service';
 
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { UsersFeaturesModule } from './users-features/users-features.module';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, UsersFeaturesModule],
   providers: [UserService, PrismaService, VerificationService, MailService],
   controllers: [UserController],
   exports: [UserService],
