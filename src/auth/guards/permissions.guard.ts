@@ -12,7 +12,7 @@ import { getObjectEntries } from '@xenopomp/advanced-utils';
 import { getUserFromCtx } from '@/auth/decorators/user.decorator';
 import { RolesService } from '@/roles/roles.service';
 
-type PermissionList = Partial<Record<keyof typeof Permissions, boolean>>;
+export type PermissionList = Partial<Record<keyof typeof Permissions, boolean>>;
 
 const SetRoles = Reflector.createDecorator<PermissionList>();
 
