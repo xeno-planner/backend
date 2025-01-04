@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { Permissions } from '@prisma/client';
 import { getObjectEntries } from '@xenopomp/advanced-utils';
 
+import { SUPERUSER_PERM } from '@/assets/constants';
 import { getUserFromCtx } from '@/auth/decorators/user.decorator';
 import { RolesService } from '@/roles/roles.service';
 
@@ -33,7 +34,7 @@ export class PermissionsGuard implements CanActivate {
     );
 
     // Superuser entry
-    if (userPerms.includes('all')) {
+    if (userPerms.includes(SUPERUSER_PERM)) {
       return true;
     }
 
@@ -45,9 +46,9 @@ export class PermissionsGuard implements CanActivate {
       )
       .map(([perm]) => perm);
 
-    // Here user is not super one. Checking if 'all' permission is required.
+    // Here user is not super one. Checking if SUPERUSER_PERM permission is required.
     // If it is, denying request (because only superuser can access endpoint).
-    if (reqPerms.includes('all')) {
+    if (reqPerms.includes(SUPERUSER_PERM)) {
       return false;
     }
 
