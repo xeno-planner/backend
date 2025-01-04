@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode } from '@nestjs/common';
 
 import { Auth } from '@/auth/decorators/auth.decorator';
 import { RequiresPermissions } from '@/auth/guards/permissions.guard';
@@ -11,6 +11,7 @@ export class ServerAnalyticsController {
     private readonly serverAnalyticsService: ServerAnalyticsService,
   ) {}
 
+  @HttpCode(200)
   @Get('/db/status')
   @RequiresPermissions({
     canAccessAdminPage: true,
