@@ -141,9 +141,3 @@ enum Priority {
   medium
   high
 }
-
-// Items below are created only for exporting it in package/types
-enum DatabaseStatus {
-  ok
-  cantAccess
-}
