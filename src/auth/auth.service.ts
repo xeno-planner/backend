@@ -34,12 +34,12 @@ export class AuthService {
     const { password, ...user } = await this.validateUser(dto);
 
     // Check for verification
-    const verificationStatus = await this.getVerificationStatus(user);
+    // const verificationStatus = await this.getVerificationStatus(user);
 
     // Continue only if user clicked
     // Confirm account button from email.
-    if (verificationStatus !== VerificationStatus.accepted)
-      throw new BadRequestException('Confirm account from email.');
+    // if (verificationStatus !== VerificationStatus.accepted)
+    //   throw new BadRequestException('Confirm account from email.');
 
     /** Access and refresh tokens */
     const tokens = this.issueToken(user.id);
@@ -58,13 +58,6 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
-
-    // Request verification
-    await this.verificationService.requestVerification(user.id);
-
-    return {
-      verification: VerificationStatus.requested,
-    };
   }
 
   async verifyViaEmail(userId: string, secret: string, res: Response) {

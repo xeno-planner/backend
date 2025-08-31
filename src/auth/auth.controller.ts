@@ -37,9 +37,10 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() dto: AuthDto,
-    // @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    return await this.authService.register(dto);
+    await this.authService.register(dto);
+    return this.login(dto, res);
   }
 
   @HttpCode(200)
