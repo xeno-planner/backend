@@ -90,6 +90,8 @@ export class VerificationService implements OnModuleInit {
     await this.prisma.userVerification.create({
       data: {
         secret: await hash(secret),
+        // Make verification taking no effect
+        status: 'accepted',
 
         user: {
           connect: {
