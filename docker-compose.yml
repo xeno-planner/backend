@@ -1,0 +1,26 @@
+version: '1.0'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: xenoplanner-compose-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+
+  backend:
+    build: .
+    container_name: xenoplanner-backend
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DIRECT_DATABASE_URL=${DIRECT_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - APP_HOST=${APP_HOST}
+      - APP_FULL_URL=${APP_FULL_URL}
+      - FRONT_END_HOST=${FRONT_END_HOST}
+      - ENV_MODE=prod
+      - NODE_ENV=production

@@ -1,10 +1,12 @@
 # Stage 1: Build the application
 FROM node:20-alpine AS build
+RUN apk add --no-cache openssl
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 COPY . .
 RUN yarn build
+RUN yarn migrate:dev --name docker
 
 # Stage 2: Run the application
 FROM node:20-alpine
