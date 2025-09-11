@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { PomodoroRound, PomodoroSession } from '@prisma/client';
 
 import { PomodoroRoundDto, PomodoroSessionDto } from '@/pomodoro/pomodoro.dto';
 import { PrismaService } from '@/prisma.service';
@@ -6,6 +7,27 @@ import { PrismaService } from '@/prisma.service';
 @Injectable()
 export class PomodoroService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async roundExists(roundId: string): Promise<boolean> {
+    const round: PomodoroRound = await this.prisma.pomodoroRound.findUnique({
+      where: {
+        id: roundId,
+      },
+    });
+
+    return round !== null && round !== undefined;
+  }
+
+  async sessionExists(sessionId: string): Promise<boolean> {
+    const session: PomodoroSession =
+      await this.prisma.pomodoroSession.findUnique({
+        where: {
+          id: sessionId,
+        },
+      });
+
+    return session !== null && session !== undefined;
+  }
 
   async getTodaySession(userId: string) {
     const today = new Date().toISOString().split('T')[0];
@@ -64,7 +86,13 @@ export class PomodoroService {
     });
   }
 
-  async update(dto: Partial<PomodoroSessionDto>, pomodoroId, userId: string) {
+  async update(
+    dto: Partial<PomodoroSessionDto>,
+    pomodoroId: string,
+    userId: string,
+  ) {
+    if (!(await this.sessionExists(pomodoroId))) throw new NotFoundException();
+
     return this.prisma.pomodoroSession.update({
       where: {
         userId,
@@ -75,6 +103,8 @@ export class PomodoroService {
   }
 
   async updateRound(dto: Partial<PomodoroRoundDto>, roundId: string) {
+    if (!(await this.roundExists(roundId))) throw new NotFoundException();
+
     return this.prisma.pomodoroRound.update({
       where: {
         id: roundId,
@@ -84,6 +114,8 @@ export class PomodoroService {
   }
 
   async deleteSession(sessionId: string, userId: string) {
+    if (!(await this.sessionExists(sessionId))) throw new NotFoundException();
+
     return this.prisma.pomodoroSession.delete({
       where: {
         id: sessionId,
