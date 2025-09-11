@@ -7,6 +7,8 @@ services:
     restart: always
     ports:
       - "5500:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${PGUSER}
       - POSTGRES_PASSWORD=${PGPASSWORD}
@@ -34,6 +36,9 @@ services:
       - ENV_MODE=${ENV_MODE}
     networks:
       - default
+
+volumes:
+  db_data:
 
 networks:
   default:
