@@ -23,10 +23,10 @@ export class UserService {
     });
   }
 
-  async getByEmail(email: User['email']) {
+  async getByLogin(login: User['login']) {
     return this.prisma.user.findUnique({
       where: {
-        email,
+        login,
       },
       include: {
         tasks: true,
@@ -35,8 +35,8 @@ export class UserService {
   }
 
   async create(dto: AuthDto) {
-    const user: Pick<User, 'email' | 'name' | 'password'> = {
-      email: dto.email,
+    const user: Pick<User, 'login' | 'name' | 'password'> = {
+      login: dto.login,
       name: '',
       password: await hash(dto.password),
     };
@@ -60,7 +60,7 @@ export class UserService {
       data,
       select: {
         name: true,
-        email: true,
+        login: true,
       },
     });
   }

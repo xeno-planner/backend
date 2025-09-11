@@ -57,19 +57,12 @@ export class MailService {
    * Send email to email of user with certain __userId__.
    * @param userId
    * @param params
+   * @deprecated
    */
   async sendMailByUserId(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     userId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ...params: Parameters<typeof renderAsync>
-  ) {
-    const { email } = await this.userService.getById(userId);
-    const html = await this.renderEmail(...params);
-
-    /** Send email letter to user`s email address. */
-    await this.sendMailTo({
-      email,
-      subject: 'Подтверждение учетной записи',
-      html,
-    });
-  }
+  ) {}
 }
