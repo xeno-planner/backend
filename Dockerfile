@@ -6,7 +6,7 @@ COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 COPY . .
 RUN yarn build
-RUN yarn migrate:dev --name docker
+# RUN yarn migrate:dev --name docker
 
 # Stage 2: Run the application
 FROM node:20-alpine

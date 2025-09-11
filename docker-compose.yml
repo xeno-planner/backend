@@ -6,7 +6,7 @@ services:
     container_name: xenoplanner-compose-db
     restart: always
     ports:
-      - "5432:5432"
+      - "5500:5500"
     environment:
       - POSTGRES_USER=${PGUSER}
       - POSTGRES_PASSWORD=${PGPASSWORD}
@@ -19,5 +19,19 @@ services:
     container_name: xenoplanner-backend
     depends_on:
       - db
+    environment:
+      - PGDATABASE=${PGDATABASE}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - DATABASE_URL=${DATABASE_URL}
+      - DIRECT_DATABASE_URL=${DIRECT_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - APP_HOST=${APP_HOST}
+      - APP_FULL_URL=${APP_FULL_URL}
+      - FRONT_END_HOST=${FRONT_END_HOST}
+      - ENV_MODE=${ENV_MODE}
     networks:
       - default
+
+networks:
+  default:
