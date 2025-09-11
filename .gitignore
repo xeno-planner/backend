@@ -60,6 +60,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Generated
 packages/types/*.node
+packages/types/*
+!packages/types/.gitkeep
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij
