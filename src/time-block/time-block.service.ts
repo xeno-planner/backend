@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { TimeBlock } from '@prisma/client';
 
 import { PrismaService } from '@/prisma.service';
 import { TimeBlockDto } from '@/time-block/dto/time-block.dto';
@@ -6,6 +7,16 @@ import { TimeBlockDto } from '@/time-block/dto/time-block.dto';
 @Injectable()
 export class TimeBlockService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async exists(timeBlockId: string): Promise<boolean> {
+    const block: TimeBlock = await this.prisma.timeBlock.findUnique({
+      where: {
+        id: timeBlockId,
+      },
+    });
+
+    return block !== undefined && block !== null;
+  }
 
   async getAll(userId: string) {
     return this.prisma.timeBlock.findMany({
@@ -36,6 +47,8 @@ export class TimeBlockService {
     timeBlockId: string,
     userId: string,
   ) {
+    if (!(await this.exists(timeBlockId))) throw new NotFoundException();
+
     return this.prisma.timeBlock.update({
       where: {
         userId,
@@ -46,6 +59,8 @@ export class TimeBlockService {
   }
 
   async delete(timeBlockId: string, userId: string) {
+    if (!(await this.exists(timeBlockId))) throw new NotFoundException();
+
     return this.prisma.timeBlock.delete({
       where: {
         id: timeBlockId,
