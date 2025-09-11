@@ -6,7 +6,7 @@ services:
     container_name: xenoplanner-compose-db
     restart: always
     ports:
-      - "5500:5500"
+      - "5500:5432"
     environment:
       - POSTGRES_USER=${PGUSER}
       - POSTGRES_PASSWORD=${PGPASSWORD}
