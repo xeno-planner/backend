@@ -27,8 +27,8 @@ services:
       - PGDATABASE=${PGDATABASE}
       - PGUSER=${PGUSER}
       - PGPASSWORD=${PGPASSWORD}
-      - DATABASE_URL=${DATABASE_URL}
-      - DIRECT_DATABASE_URL=${DIRECT_DATABASE_URL}
+      - DATABASE_URL=postgresql://${PGUSER}:${PGPASSWORD}@xenoplanner-compose-db:5432/${PGDATABASE}?schema=public&connect_timeout=300
+      - DIRECT_DATABASE_URL=postgresql://${PGUSER}:${PGPASSWORD}@xenoplanner-compose-db:5432/${PGDATABASE}?schema=public&connect_timeout=300
       - JWT_SECRET=${JWT_SECRET}
       - APP_HOST=${APP_HOST}
       - APP_FULL_URL=${APP_FULL_URL}
