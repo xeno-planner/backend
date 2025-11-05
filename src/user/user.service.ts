@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Task, User } from '@prisma/client';
 import { hash } from 'argon2';
 import { startOfDay, subDays } from 'date-fns';
 
 import { SanitizedUser } from '@/assets/types/SanitizedUser';
 import { AuthDto } from '@/auth/dto/auth.dto';
+import { UserServiceContract } from '@/contracts/user-service.contract';
 import { PrismaService } from '@/prisma.service';
 import { UserDto } from '@/user/dto/user.dto';
 
+type ServiceContract = UserServiceContract<
+  User, // Original user type
+  User & { tasks: Task[] }, // User type returned by getter functions
+  Pick<User, 'name' | 'login'>, // User type returned by updater function
+  InstanceType<typeof AuthDto>, // Auth dto used by creater function
+  InstanceType<typeof UserDto> // Dto that is used in updater function
+>;
+
 @Injectable()
-export class UserService {
+export class UserService implements ServiceContract {
   constructor(private readonly prisma: PrismaService) {}
 
   async getById(id: User['id']) {

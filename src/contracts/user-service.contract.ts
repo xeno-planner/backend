@@ -1,7 +1,7 @@
 export interface UserServiceContract<
   Shape extends UserShape,
-  ExtendedShape extends Shape,
-  UpdateShape extends Shape,
+  ExtendedShape extends Partial<Shape>,
+  UpdateShape extends Partial<Shape>,
   AuthDto extends AuthDtoShape,
   UpdateDto extends UpdateDtoShape,
 > {
