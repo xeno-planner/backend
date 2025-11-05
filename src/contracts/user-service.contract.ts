@@ -1,4 +1,4 @@
-export interface UserContract<
+export interface UserServiceContract<
   Shape extends UserShape,
   ExtendedShape extends Shape,
   UpdateShape extends Shape,
