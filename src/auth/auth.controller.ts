@@ -1,11 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
-  Param,
   Post,
-  Query,
   Req,
   Res,
   UnauthorizedException,
@@ -77,15 +74,5 @@ export class AuthController {
     return {
       logout: true,
     };
-  }
-
-  @HttpCode(200)
-  @Get('verify/:userId')
-  async verifyUser(
-    @Param('userId') userId: string,
-    @Query('secret') secret: string,
-    @Res() res: Response,
-  ) {
-    return this.authService.verifyViaEmail(userId, secret, res);
   }
 }

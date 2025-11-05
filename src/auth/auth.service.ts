@@ -1,27 +1,23 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User, VerificationStatus } from '@prisma/client';
+import { User } from '@prisma/client';
 import { verify } from 'argon2';
 import { CookieOptions, Response } from 'express';
 
-import { SanitizedUser } from '@/assets/types/SanitizedUser';
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { UserService } from '@/user/user.service';
-import { VerificationService } from '@/verification.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwt: JwtService,
     private readonly userService: UserService,
-    private readonly verificationService: VerificationService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -32,14 +28,6 @@ export class AuthService {
     // Get user and sanitize him
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.validateUser(dto);
-
-    // Check for verification
-    // const verificationStatus = await this.getVerificationStatus(user);
-
-    // Continue only if user clicked
-    // Confirm account button from email.
-    // if (verificationStatus !== VerificationStatus.accepted)
-    //   throw new BadRequestException('Confirm account from email.');
 
     /** Access and refresh tokens */
     const tokens = this.issueToken(user.id);
@@ -58,24 +46,6 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
-  }
-
-  async verifyViaEmail(userId: string, secret: string, res: Response) {
-    /** Link to deployed front-end app. */
-    const frontEndUrl = this.configService.get<string>('FRONT_END_HOST');
-
-    try {
-      const isValid = await this.verificationService.verify(userId, secret);
-
-      if (!isValid)
-        throw new BadRequestException('Incorrect verification data.');
-
-      // Redirect to front-end page
-      res.redirect(`${frontEndUrl}/auth/verify/accepted`);
-    } catch (err) {
-      // Redirect to error page
-      res.redirect(`${frontEndUrl}/auth/verify/expired`);
-    }
   }
 
   /**
@@ -165,20 +135,5 @@ export class AuthService {
     if (!isValid) throw new UnauthorizedException('Invalid password');
 
     return user;
-  }
-
-  /** Checks if user has been verificated. */
-  private async getVerificationStatus({
-    id,
-  }: SanitizedUser): Promise<VerificationStatus> {
-    const verification = await this.verificationService.getByUserId(id);
-
-    /** No verification record was found. */
-    if (!verification) {
-      await this.userService.delete(id);
-      throw new ForbiddenException('Verification not requested for that user');
-    }
-
-    return verification.status;
   }
 }
